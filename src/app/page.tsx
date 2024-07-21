@@ -6,6 +6,8 @@ import {Stage, Layer, Rect, Line} from 'react-konva';
 const rowsCount = 3;
 const columnsCount = 3;
 
+const gridStroke = 2;
+
 class Node {
     isWallOnTop = true;
     isWallOnRight = true;
@@ -97,13 +99,12 @@ export default function Home() {
     useEffect(
         () => {
             generateMaze();
-            drawNodes();
+            drawNodesLayer();
         },
         []
     );
 
-    function drawGrid() {
-        const gridStroke = 2;
+    function drawGridLayer() {
         const width = 400;
         const height = 400;
 
@@ -122,20 +123,22 @@ export default function Home() {
         return <Layer>{lines}</Layer>
     }
 
-    function drawNodes() {
+    function drawNodesLayer() {
         const width = 400;
         const height = 400;
 
         const spaceX = width / rowsCount;
         const spaceY = height / columnsCount;
 
+        const gridStrokeOffset = gridStroke * 0.5;
+
         const nodes2 = [];
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[i].length; j++) {
-                nodes2.push(<Rect x={spaceX * i}
-                                  y={spaceY * j}
-                                  width={spaceX}
-                                  height={spaceY}
+                nodes2.push(<Rect x={gridStrokeOffset + spaceX * i}
+                                  y={gridStrokeOffset + spaceY * j}
+                                  width={spaceX - gridStroke}
+                                  height={spaceY - gridStroke}
                                   fill='grey'/>)
             }
         }
@@ -146,7 +149,7 @@ export default function Home() {
         <div style={{display: 'flex', justifyContent: "center", alignItems: 'center', textAlign: 'center'}}>
             <Stage width={window.innerWidth} height={window.innerHeight}>
                 {
-                    drawGrid()
+                    drawGridLayer()
                 }
                 <Layer>
                     {nodes}
