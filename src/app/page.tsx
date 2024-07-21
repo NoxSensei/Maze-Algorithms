@@ -3,8 +3,8 @@
 import {useEffect, useState} from "react";
 import {Stage, Layer, Rect, Line} from 'react-konva';
 
-const rowsCount = 3;
-const columnsCount = 3;
+const rowsCount = 7;
+const columnsCount = 7;
 
 const gridStroke = 2;
 
@@ -15,8 +15,6 @@ class Node {
     isWallOnLeft = true;
 }
 
-
-const grid = Array.from(new Array(rowsCount), () => new Array(columnsCount).fill(undefined).map(() => new Node()))
 
 const directions = ['N', 'E', 'S', 'W']
 
@@ -34,14 +32,18 @@ function shuffleArray(array) {
 }
 
 function generateMaze() {
+    const grid = Array.from(new Array(rowsCount), () => new Array(columnsCount).fill(undefined).map(() => new Node()))
+
     const visited = new Set();
     const i = randomInt(0, rowsCount - 1);
     const j = randomInt(0, columnsCount - 1);
 
-    backtracer(i, j, visited)
+    backtracer(grid, i, j, visited)
+
+    return grid;
 }
 
-function backtracer(i, j, visited) {
+function backtracer(grid, i, j, visited) {
     visited.add(`${i}_${j}`);
     shuffleArray(directions).forEach(direction => {
         if (direction === 'N') {
@@ -55,7 +57,7 @@ function backtracer(i, j, visited) {
 
             grid[index][j].isWallOnBot = false;
             grid[i][j].isWallOnTop = false;
-            backtracer(index, j, visited)
+            backtracer(grid, index, j, visited)
         } else if (direction === 'E') {
             const index = j + 1;
             if (index > columnsCount - 1) {
@@ -66,7 +68,7 @@ function backtracer(i, j, visited) {
             }
             grid[i][index].isWallOnLeft = false;
             grid[i][j].isWallOnRight = false;
-            backtracer(i, index, visited)
+            backtracer(grid, i, index, visited)
         } else if (direction === 'S') {
             const index = i + 1;
             if (index > rowsCount - 1) {
@@ -77,7 +79,7 @@ function backtracer(i, j, visited) {
             }
             grid[index][j].isWallOnTop = false;
             grid[i][j].isWallOnBot = false;
-            backtracer(index, j, visited)
+            backtracer(grid, index, j, visited)
         } else if (direction === 'W') {
             const index = j - 1;
             if (index < 0) {
@@ -88,18 +90,66 @@ function backtracer(i, j, visited) {
             }
             grid[i][index].isWallOnRight = false;
             grid[i][j].isWallOnLeft = false;
-            backtracer(i, index, visited)
+            backtracer(grid, i, index, visited)
         }
     })
 }
+
+function printGrid(grid) {
+    let gridString = "";
+    for (let i = 0; i < grid.length; i++) {
+        // top
+        for (let j = 0; j < grid[i].length; j++) {
+            if (grid[i][j].isWallOnTop) {
+                gridString += 'www';
+            } else {
+                gridString += 'wcw';
+            }
+        }
+        gridString += '\n';
+
+        // left and right
+        for (let j = 0; j < grid[i].length; j++) {
+            if (grid[i][j].isWallOnLeft) {
+                gridString += 'w'
+            } else {
+                gridString += 'c'
+            }
+
+            gridString += 'r';
+
+            if (grid[i][j].isWallOnRight) {
+                gridString += 'w'
+            } else {
+                gridString += 'c'
+            }
+
+        }
+
+        gridString += '\n';
+
+        // bottom wall
+        for (let j = 0; j < grid[i].length; j++) {
+            if (grid[i][j].isWallOnBot) {
+                gridString += 'www';
+            } else {
+                gridString += 'wcw';
+            }
+        }
+        gridString += '\n';
+    }
+
+    console.log(gridString)
+}
+
 
 export default function Home() {
     const [nodes, setNodes] = useState([]);
 
     useEffect(
         () => {
-            generateMaze();
-            drawNodesLayer();
+            const grid = generateMaze();
+            drawGeneratedNodesLayer(grid);
         },
         []
     );
@@ -123,7 +173,29 @@ export default function Home() {
         return <Layer>{lines}</Layer>
     }
 
-    function drawNodesLayer() {
+    // function drawNodesLayer() {
+    //     const width = 400;
+    //     const height = 400;
+    //
+    //     const spaceX = width / rowsCount;
+    //     const spaceY = height / columnsCount;
+    //
+    //     const gridStrokeOffset = gridStroke * 0.5;
+    //
+    //     const nodes2 = [];
+    //     for (let i = 0; i < grid.length; i++) {
+    //         for (let j = 0; j < grid[i].length; j++) {
+    //             nodes2.push(<Rect x={gridStrokeOffset + spaceX * i}
+    //                               y={gridStrokeOffset + spaceY * j}
+    //                               width={spaceX - gridStroke}
+    //                               height={spaceY - gridStroke}
+    //                               fill='grey'/>)
+    //         }
+    //     }
+    //     setNodes(nodes2)
+    // }
+
+    function drawGeneratedNodesLayer(grid) {
         const width = 400;
         const height = 400;
 
@@ -135,13 +207,34 @@ export default function Home() {
         const nodes2 = [];
         for (let i = 0; i < grid.length; i++) {
             for (let j = 0; j < grid[i].length; j++) {
-                nodes2.push(<Rect x={gridStrokeOffset + spaceX * i}
-                                  y={gridStrokeOffset + spaceY * j}
-                                  width={spaceX - gridStroke}
-                                  height={spaceY - gridStroke}
-                                  fill='grey'/>)
+                let nodeWidth = spaceX - gridStroke;
+                let nodeHeight = spaceY - gridStroke;
+                let xOffset = gridStrokeOffset + spaceX * j;
+                let yOffset = gridStrokeOffset + spaceY * i;
+
+                if (!grid[i][j].isWallOnTop) {
+                    yOffset = spaceY * i;
+                    nodeHeight += gridStrokeOffset;
+                }
+                if (!grid[i][j].isWallOnRight) {
+                    nodeWidth += gridStrokeOffset;
+                }
+                if (!grid[i][j].isWallOnBot) {
+                    nodeHeight += gridStrokeOffset;
+                }
+                if (!grid[i][j].isWallOnLeft) {
+                    xOffset = spaceX * j;
+                    nodeWidth += gridStrokeOffset;
+                }
+
+                nodes2.push(<Rect x={xOffset}
+                                  y={yOffset}
+                                  width={nodeWidth}
+                                  height={nodeHeight}
+                                  fill='green'/>)
             }
         }
+        printGrid(grid);
         setNodes(nodes2)
     }
 
@@ -151,6 +244,9 @@ export default function Home() {
                 {
                     drawGridLayer()
                 }
+                <Layer>
+                    {nodes}
+                </Layer>
                 <Layer>
                     {nodes}
                 </Layer>
