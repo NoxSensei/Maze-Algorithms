@@ -8,7 +8,7 @@ export default function Home() {
 
     useEffect(() => {
         push('/algorithms/dfe');
-    }, []);
+    });
 
     return <p></p>;
 }
