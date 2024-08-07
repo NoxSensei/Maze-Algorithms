@@ -1,6 +1,6 @@
 'use client'
 
-import {useEffect, useState} from "react";
+import {useEffect, useLayoutEffect, useRef, useState} from "react";
 import {Stage, Layer, Rect, Line} from 'react-konva';
 import {DepthFirstSearchAlgorithm} from "@/app/algorithms/_services/depth-first-search-algorithm";
 import {MazeNode} from "@/app/algorithms/_services/maze-node";
@@ -10,9 +10,27 @@ const columnsCount = 7;
 
 const gridStroke = 2;
 
+interface CanvasSize {
+    height: number;
+    width: number;
+}
 
 export default function DepthFirstSearchAlgorithmPage() {
     const [nodes, setNodes] = useState([]);
+    const [canvasSize, setCanvasSize] = useState<CanvasSize>({width: 0, height: 0})
+    const divRef = useRef<HTMLDivElement | null>(null);
+
+    useLayoutEffect(() => {
+        const isDivElement = (element: HTMLDivElement | null): element is HTMLDivElement => element !== null;
+        if (!isDivElement(divRef.current)) {
+            return;
+        }
+
+        setCanvasSize({
+            width: divRef.current.offsetWidth,
+            height: divRef.current.offsetHeight
+        })
+    }, []);
 
     useEffect(
         () => {
@@ -40,28 +58,6 @@ export default function DepthFirstSearchAlgorithmPage() {
 
         return <Layer>{lines}</Layer>
     }
-
-    // function drawNodesLayer() {
-    //     const width = 400;
-    //     const height = 400;
-    //
-    //     const spaceX = width / rowsCount;
-    //     const spaceY = height / columnsCount;
-    //
-    //     const gridStrokeOffset = gridStroke * 0.5;
-    //
-    //     const nodes2 = [];
-    //     for (let i = 0; i < grid.length; i++) {
-    //         for (let j = 0; j < grid[i].length; j++) {
-    //             nodes2.push(<Rect x={gridStrokeOffset + spaceX * i}
-    //                               y={gridStrokeOffset + spaceY * j}
-    //                               width={spaceX - gridStroke}
-    //                               height={spaceY - gridStroke}
-    //                               fill='grey'/>)
-    //         }
-    //     }
-    //     setNodes(nodes2)
-    // }
 
     function drawGeneratedNodesLayer(grid: MazeNode[][]) {
         const width = 400;
@@ -102,13 +98,13 @@ export default function DepthFirstSearchAlgorithmPage() {
                                   fill='green'/>)
             }
         }
-        printGrid(grid);
         setNodes(nodes2)
     }
 
     return (
-        <div style={{display: 'flex', justifyContent: "center", alignItems: 'center', textAlign: 'center'}}>
-            <Stage width={window.innerWidth} height={window.innerHeight}>
+        <div ref={divRef}
+             style={{display: 'flex', justifyContent: "center", alignItems: 'center', textAlign: 'center', height: '100%'}}>
+            <Stage width={canvasSize.width} height={canvasSize.height}>
                 {
                     drawGridLayer()
                 }
