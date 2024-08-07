@@ -10,9 +10,13 @@ interface CanvasSize {
     width: number;
 }
 
-export default function DepthFirstSearchAlgorithmCanvasComponent() {
-    const rowsCount = 7;
-    const columnsCount = 7;
+export interface DepthFirstSearchAlgorithmCanvasComponentProps {
+    dimension: number;
+}
+
+export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFirstSearchAlgorithmCanvasComponentProps) {
+    const rowsCount = props.dimension;
+    const columnsCount = props.dimension;
 
     const [nodes, setNodes] = useState([]);
     const [canvasSize, setCanvasSize] = useState<CanvasSize>({width: 0, height: 0})

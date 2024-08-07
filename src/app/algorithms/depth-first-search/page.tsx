@@ -17,16 +17,16 @@ export default function DepthFirstSearchAlgorithmPage() {
             </span>
             <div className="grid grid-cols-3" style={{padding: '10px'}}>
                 <div className="flex justify-center flex-col">
-                    <span className="flex justify-center">Small</span>
-                    <DepthFirstSearchAlgorithmCanvasComponent/>
+                    <span className="flex justify-center">Small 10x10</span>
+                    <DepthFirstSearchAlgorithmCanvasComponent dimension={10}/>
                 </div>
                 <div className="flex justify-center flex-col">
-                    <span className="flex justify-center">Small</span>
-                    <DepthFirstSearchAlgorithmCanvasComponent/>
+                    <span className="flex justify-center">Medium 25x25</span>
+                    <DepthFirstSearchAlgorithmCanvasComponent dimension={25}/>
                 </div>
                 <div className="flex justify-center flex-col">
-                    <span className="flex justify-center">Small</span>
-                    <DepthFirstSearchAlgorithmCanvasComponent/>
+                    <span className="flex justify-center">Large 50x50</span>
+                    <DepthFirstSearchAlgorithmCanvasComponent dimension={50}/>
                 </div>
             </div>
         </div>
