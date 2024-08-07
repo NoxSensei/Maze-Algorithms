@@ -103,7 +103,14 @@ export default function DepthFirstSearchAlgorithmPage() {
 
     return (
         <div ref={divRef}
-             style={{display: 'flex', justifyContent: "center", alignItems: 'center', textAlign: 'center', height: '100%'}}>
+             style={{
+                 display: 'flex',
+                 justifyContent: "center",
+                 alignItems: 'center',
+                 textAlign: 'center',
+                 height: "calc(100% - 200px)",
+                 margin: '100px'
+             }}>
             <Stage width={canvasSize.width} height={canvasSize.height}>
                 {
                     drawGridLayer()
