@@ -59,7 +59,7 @@ function printGrid(grid: MazeNode[][]) {
 }
 
 
-export default function DfeAlgorithmPage() {
+export default function DepthFirstSearchAlgorithmPage() {
     const [nodes, setNodes] = useState([]);
 
     useEffect(

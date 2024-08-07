@@ -2,13 +2,15 @@
 
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
+import {bgBlack} from "next/dist/lib/picocolors";
+import Link from "next/link";
 
-export default function Home() {
+export default function HomePage() {
     const {push} = useRouter();
 
     useEffect(() => {
-        push('/algorithms/dfe');
+        push('/algorithms');
     });
 
-    return <p></p>;
+    return <></>;
 }
