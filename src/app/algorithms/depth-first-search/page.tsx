@@ -26,45 +26,42 @@ export default function DepthFirstSearchAlgorithmPage() {
             return;
         }
 
+        const canvasWidth = divRef.current.offsetWidth
         setCanvasSize({
-            width: divRef.current.offsetWidth,
-            height: divRef.current.offsetHeight
+            width: canvasWidth,
+            height: canvasWidth
         })
     }, []);
 
     useEffect(
         () => {
             const grid = new DepthFirstSearchAlgorithm().run(rowsCount, columnsCount);
-            drawGeneratedNodesLayer(grid);
+            drawGeneratedNodesLayer(canvasSize.width, canvasSize.height, grid);
         },
-        []
+        [canvasSize]
     );
 
-    function drawGridLayer() {
-        const width = 400;
-        const height = 400;
-
-        const spaceX = width / rowsCount;
-        const spaceY = width / columnsCount;
+    function drawGridLayer(canvasWidth: number, canvasHeight: number) {
+        const spaceX = canvasWidth / rowsCount;
+        const spaceY = canvasHeight / columnsCount;
 
         const lines = [];
         for (let i = 0; i < rowsCount + 1; i++) {
-            lines.push(<Line points={[0, i * spaceY, width, i * spaceY]} stroke="black" strokeWidth={gridStroke}/>)
+            lines.push(<Line points={[0, i * spaceY, canvasWidth, i * spaceY]} stroke="black"
+                             strokeWidth={gridStroke}/>)
         }
 
         for (let i = 0; i < columnsCount + 1; i++) {
-            lines.push(<Line points={[i * spaceX, 0, i * spaceX, height]} stroke="black" strokeWidth={gridStroke}/>)
+            lines.push(<Line points={[i * spaceX, 0, i * spaceX, canvasHeight]} stroke="black"
+                             strokeWidth={gridStroke}/>)
         }
 
         return <Layer>{lines}</Layer>
     }
 
-    function drawGeneratedNodesLayer(grid: MazeNode[][]) {
-        const width = 400;
-        const height = 400;
-
-        const spaceX = width / rowsCount;
-        const spaceY = height / columnsCount;
+    function drawGeneratedNodesLayer(canvasWidth: number, canvasHeight: number, grid: MazeNode[][]) {
+        const spaceX = canvasWidth / rowsCount;
+        const spaceY = canvasHeight / columnsCount;
 
         const gridStrokeOffset = gridStroke * 0.5;
 
@@ -102,26 +99,74 @@ export default function DepthFirstSearchAlgorithmPage() {
     }
 
     return (
-        <div ref={divRef}
-             style={{
-                 display: 'flex',
-                 justifyContent: "center",
-                 alignItems: 'center',
-                 textAlign: 'center',
-                 height: "calc(100% - 200px)",
-                 margin: '100px'
-             }}>
-            <Stage width={canvasSize.width} height={canvasSize.height}>
-                {
-                    drawGridLayer()
-                }
-                <Layer>
-                    {nodes}
-                </Layer>
-                <Layer>
-                    {nodes}
-                </Layer>
-            </Stage>
+        <div
+            style={{
+                padding: '50px',
+                color: "black",
+            }}>
+            <h1>Depth First Search</h1>
+            <span>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </span>
+            <div className="grid grid-cols-3" style={{padding: '10px'}}>
+                <div className="flex justify-center flex-col">
+                    <span className="flex justify-center">Small</span>
+                    <div className="flex justify-center">
+                        <div ref={divRef} className="w-3/4">
+                            <Stage width={canvasSize.width} height={canvasSize.height}>
+                                <Layer>
+                                    <Rect fill="red" x={0} y={0} width={10000} height={10000}></Rect>
+                                </Layer>
+                                {
+                                    drawGridLayer(canvasSize.width, canvasSize.height)
+                                }
+                                <Layer>
+                                    {nodes}
+                                </Layer>
+                                <Layer>
+                                    {nodes}
+                                </Layer>
+                            </Stage>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex justify-center">
+                    <div ref={divRef} className="w-3/4">
+                        <Stage width={canvasSize.width} height={canvasSize.height}>
+                            <Layer>
+                                <Rect fill="red" x={0} y={0} width={10000} height={10000}></Rect>
+                            </Layer>
+                            {
+                                drawGridLayer(canvasSize.width, canvasSize.height)
+                            }
+                            <Layer>
+                                {nodes}
+                            </Layer>
+                            <Layer>
+                                {nodes}
+                            </Layer>
+                        </Stage>
+                    </div>
+                </div>
+                <div className="flex justify-center">
+                    <div ref={divRef} className="w-3/4">
+                        <Stage width={canvasSize.width} height={canvasSize.height}>
+                            <Layer>
+                                <Rect fill="red" x={0} y={0} width={10000} height={10000}></Rect>
+                            </Layer>
+                            {
+                                drawGridLayer(canvasSize.width, canvasSize.height)
+                            }
+                            <Layer>
+                                {nodes}
+                            </Layer>
+                            <Layer>
+                                {nodes}
+                            </Layer>
+                        </Stage>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
