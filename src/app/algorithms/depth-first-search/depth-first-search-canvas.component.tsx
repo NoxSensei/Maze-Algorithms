@@ -109,9 +109,6 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
                 <Layer>
                     {nodes}
                 </Layer>
-                <Layer>
-                    {nodes}
-                </Layer>
             </Stage>
         </div>
     </div>
