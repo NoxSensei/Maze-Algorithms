@@ -3,17 +3,28 @@
 import DepthFirstSearchAlgorithmCanvasComponent
     from "@/app/algorithms/depth-first-search/depth-first-search-canvas.component";
 import MermaidDiagram from "@/app/algorithms/_components/mermaid-diagram";
+import DepthFirstSearchDescriptionComponent from "@/app/algorithms/depth-first-search/description.component";
 
 const diagram = `flowchart TD
-    A[Start] --> B[Select random cell and mark it as visited]
-    B --> C[Visit all of the neighbours in random order]
-    C --> D{Is the neighbour in the given direction?}
-    D -- Yes --> E{Has the neighbour been visited?}
-    D -- No --> C
-    E -- Yes --> C
-    E -- No --> F[Add passage from source cell to the neighbour]
-    F --> G[Call the backtracer algorithm for the current cell]
-    G --> C
+    START([Start]) --> SET_GRID_SIZE[/Set grid size/]
+    SET_GRID_SIZE --> INITIALIZE_GRID[Initialize grid with all walls placed]
+    INITIALIZE_GRID --> SELECT_RANDOM_CELL[Select random grid's cell]
+    SELECT_RANDOM_CELL --> MARK_AS_VISITED[Mark cell as visited]
+    MARK_AS_VISITED --> SHUFFLE_NEIGHBOURS[Get all neighbouring cells in random order]
+    SHUFFLE_NEIGHBOURS --> ALL_NEIGHBOURS_VISITED{All neighbouring<br> cells checked?}
+    ALL_NEIGHBOURS_VISITED -- Yes --> ALL_PATHS_RESOLVED{All paths resolved?}
+    ALL_NEIGHBOURS_VISITED -- No --> SELECT_NEIGHBOUR[Select next neighbouring cell]
+    SELECT_NEIGHBOUR --> NEIGHBOUR_OUT_OF_GRID{Is the cell<br> out of grid?}
+    NEIGHBOUR_OUT_OF_GRID -- Yes --> ALL_NEIGHBOURS_VISITED
+    NEIGHBOUR_OUT_OF_GRID -- No --> NEIGHBOUR_VISITED{Has the cell<br> been visited?}
+    NEIGHBOUR_VISITED -- Yes --> ALL_NEIGHBOURS_VISITED
+    NEIGHBOUR_VISITED -- No --> ADD_PASSAGE[Add passage from source cell to the neighbour]
+    ADD_PASSAGE --> MARK_AS_CURRENT[Mark neighbour as current cell]
+    MARK_AS_CURRENT --> MARK_AS_VISITED
+    ALL_PATHS_RESOLVED -- Yes --> OUTPUT_GRID[/Return grid/]
+    OUTPUT_GRID --> END([End])
+    ALL_PATHS_RESOLVED -- No --> BACKTRACE[Go back to unresolved path]
+    BACKTRACE --> SELECT_NEIGHBOUR
 `;
 
 export default function DepthFirstSearchAlgorithmPage() {
@@ -24,43 +35,17 @@ export default function DepthFirstSearchAlgorithmPage() {
                 color: "black",
             }}>
             <div className='text-2xl text-center pb-3'>Depth First Search</div>
-            <div>
-                Given algorithm starts with grid having all of the walls placed.
-                Then it uses the recursive backtracking to create paths
-                by destroying specific walls until every room has been visited.
-                This method requires creating helper <i>set</i> dedicated for storing information about all rooms that
-                have been visited.
-            </div>
-            <div className="columns-2 pt-10">
-                <div>
-                    <div className='text-xl text-center pb-2 pt-10'>
-                        Algorithm
-                    </div>
-                    <ol className="list-decimal">
-                        <li>
-                            Select random cell and mark it as visited
-                        </li>
-                        <li>
-                            Visit all of the neighbours in the random order
-                        </li>
-                        <ol className="list-decimal list-inside">
-                            <li>
-                                {"Skip if there is no neighbour in the given direction (current cell is located on the grid's border)"}
-                            </li>
-                            <li>
-                                Skip if the given neighbour was visited
-                            </li>
-                            <li>
-                                Add passage from the source cell to the neighbour
-                            </li>
-                            <li>
-                                Call the backtracer algorithm for the current cell
-                            </li>
-                        </ol>
-                    </ol>
+            <div className="grid grid-cols-2 pt-10">
+                <DepthFirstSearchDescriptionComponent/>
+                <div className="pt-5">
+                    {/* TODO use static image */}
+                    <DepthFirstSearchAlgorithmCanvasComponent dimension={10}/>
                 </div>
-                {MermaidDiagram(diagram)}
             </div>
+            <div className='text-xl text-center pb-2 pt-10'>
+                Flow Chart
+            </div>
+            <MermaidDiagram chart={diagram}/>
             <div className='text-xl text-center pb-2 pt-10'>
                 Creator
             </div>

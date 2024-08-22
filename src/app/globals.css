@@ -8,12 +8,9 @@
   --background-end-rgb: 0, 0, 0;
 }
 
-html {
+html, body {
   height: 100%;
-}
-
-body {
-  height: 100%;
+  overflow: auto;
 }
 
 .grid {

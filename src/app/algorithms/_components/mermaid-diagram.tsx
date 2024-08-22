@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import mermaid from "mermaid";
 import * as uuid from "uuid";
 
-export default function MermaidDiagram(chart) {
+export default function MermaidDiagram({chart}) {
     const chartRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
