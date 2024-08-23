@@ -3,11 +3,11 @@
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
-export default function HomePage() {
+export default function DepthFirstSearchAlgorithmPage() {
     const {push} = useRouter();
 
     useEffect(() => {
-        push('/');
+        push('/algorithms/depth-first-search/details');
     });
 
     return <></>;
