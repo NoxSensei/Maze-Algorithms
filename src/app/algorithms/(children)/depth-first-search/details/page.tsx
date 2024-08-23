@@ -7,7 +7,6 @@ import DepthFirstSearchAlgorithmCanvasComponent
 export default function P() {
     return <div
         style={{
-            padding: '50px',
             color: "black",
         }}>
         <div className='text-2xl text-center pb-3'>Depth First Search</div>

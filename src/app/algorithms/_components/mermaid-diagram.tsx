@@ -11,7 +11,7 @@ export default function MermaidDiagram({chart}) {
             return;
         }
 
-        mermaid.initialize({startOnLoad: false, theme: 'neutral', logLevel: 'error'});
+        mermaid.initialize({startOnLoad: true, theme: 'neutral', logLevel: 'error'});
         const chartId = `chart-${uuid.v4()}`;
         mermaid.render(chartId, chart).then(result => {
             chartRef.current!.innerHTML = result.svg;

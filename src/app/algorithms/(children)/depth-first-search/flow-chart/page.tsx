@@ -24,12 +24,10 @@ const diagram = `flowchart TD
     BACKTRACE --> SELECT_NEIGHBOUR
 `;
 
-export default function P() {
-    return <div
-        style={{
-            padding: '50px',
-            color: "black",
-        }}>
-        <MermaidDiagram chart={diagram}/>
+export default function DepthFirstSearchFlowChartPage() {
+    return <div className="flex justify-center">
+        <div className="w-full max-w-screen-md">
+            <MermaidDiagram chart={diagram}/>
+        </div>
     </div>
 }

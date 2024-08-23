@@ -28,7 +28,7 @@ export default function AlgorithmInfoMenuLayout({children}: Readonly<{ children:
             </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto p-14">
             {children}
         </div>
     </div>)
