@@ -29,9 +29,12 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         }
 
         const canvasWidth = divRef.current.offsetWidth
+        const canvasHeight = divRef.current.offsetHeight
+
+        const canvasSideSize = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
         setCanvasSize({
-            width: canvasWidth,
-            height: canvasWidth
+            width: canvasSideSize,
+            height: canvasSideSize
         })
     }, []);
 
@@ -100,16 +103,14 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         setNodes(nodes2)
     }
 
-    return <div className="flex justify-center">
-        <div ref={divRef} className="w-3/4">
-            <Stage width={canvasSize.width} height={canvasSize.height}>
-                {
-                    drawGridLayer(canvasSize.width, canvasSize.height, rowsCount, columnsCount)
-                }
-                <Layer>
-                    {nodes}
-                </Layer>
-            </Stage>
-        </div>
+    return <div ref={divRef} className="h-full flex justify-center ">
+        <Stage width={canvasSize.width} height={canvasSize.height}>
+            {
+                drawGridLayer(canvasSize.width, canvasSize.height, rowsCount, columnsCount)
+            }
+            <Layer>
+                {nodes}
+            </Layer>
+        </Stage>
     </div>
 }
