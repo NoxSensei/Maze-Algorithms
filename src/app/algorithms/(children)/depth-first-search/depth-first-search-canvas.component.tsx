@@ -36,7 +36,7 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
             width: canvasSideSize,
             height: canvasSideSize
         })
-    }, []);
+    }, [props]);
 
     useEffect(
         () => {
