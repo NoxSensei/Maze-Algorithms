@@ -4,7 +4,7 @@ import DepthFirstSearchDescriptionComponent from "@/app/algorithms/(children)/de
 import DepthFirstSearchAlgorithmCanvasComponent
     from "@/app/algorithms/(children)/depth-first-search/depth-first-search-canvas.component";
 
-export default function P() {
+export default function DepthFirstSearchAlgorithmDetailsPage() {
     return <div
         style={{
             color: "black",

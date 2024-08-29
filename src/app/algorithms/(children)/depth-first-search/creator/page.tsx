@@ -2,11 +2,11 @@
 
 import DepthFirstSearchAlgorithmCanvasComponent
     from "@/app/algorithms/(children)/depth-first-search/depth-first-search-canvas.component";
-import {ChangeEvent, useEffect, useRef, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {faForwardStep, faForwardFast, faPlay, faPause} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export default function P() {
+export default function DepthFirstSearchAlgorithmCreatorPage() {
     const minGridSize = 5;
     const maxGridSize = 50;
     const gridSizeStep = 5;

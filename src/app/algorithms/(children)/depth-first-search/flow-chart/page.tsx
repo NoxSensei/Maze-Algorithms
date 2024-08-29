@@ -24,7 +24,7 @@ const diagram = `flowchart TD
     BACKTRACE --> SELECT_NEIGHBOUR
 `;
 
-export default function DepthFirstSearchFlowChartPage() {
+export default function DepthFirstSearchAlgorithmFlowChartPage() {
     return <div className="flex justify-center">
         <div className="w-full max-w-screen-md">
             <MermaidDiagram chart={diagram}/>
