@@ -12,19 +12,27 @@ export default function P() {
     const gridSizeStep = 5;
     const defaultGridSize = 15;
     const [gridSize, setGridSize] = useState<number>(defaultGridSize);
-
-    useEffect(() => {
-        console.log("reload")
-    }, [gridSize]);
+    const setGridSizeWithDebounce = debounce((value) => setGridSize(value), 100);
 
     function onGridSizeChanged(event: ChangeEvent<HTMLInputElement>) {
         const value = parseInt(event.target.value);
-        setGridSize(value);
+        setGridSizeWithDebounce(value);
     }
 
-    return <div className="h-full pb-10 text-black">
-        <div className="flex justify-center space-x-28">
-            <div className="flex flex-col space-y-2 p-2 w-80 h-20">
+    function debounce(method, timeout) {
+        let timerId;
+        return (...args) => {
+            clearTimeout(timerId);
+            timerId = setTimeout(() => {
+                method(...args)
+            }, timeout);
+        }
+    }
+
+    return <div className="h-full text-black">
+        <div className="flex h-auto justify-center space-x-28">
+            <div className="flex flex-col space-y-2 p-2 w-80 h-24">
+                <span className="flex justify-center h-4">Grid Size</span>
                 <input type="range" min={minGridSize} max={maxGridSize} step={gridSizeStep} defaultValue={gridSize} onChange={onGridSizeChanged}/>
                 <ul className="flex justify-between w-full px-[10px]">
                     <li className="flex justify-center relative">
@@ -76,6 +84,7 @@ export default function P() {
             </div>
 
             <div className="flex flex-col space-y-2 p-2 w-80  h-20">
+                <span className="flex justify-center h-4">Generation Speed</span>
                 <input type="range" className="w-full" min="1" max="3" step="1"/>
                 <ul className="flex justify-between w-full px-[10px]">
                     <li className="flex justify-center relative">
@@ -90,6 +99,8 @@ export default function P() {
                 </ul>
             </div>
         </div>
+        <div className="h-5/6">
         <DepthFirstSearchAlgorithmCanvasComponent dimension={gridSize}/>
+        </div>
     </div>
 }
