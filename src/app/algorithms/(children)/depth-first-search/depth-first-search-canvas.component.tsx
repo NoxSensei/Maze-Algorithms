@@ -1,7 +1,8 @@
 import {Layer, Line, Rect, Stage} from "react-konva";
-import {useEffect, useLayoutEffect, useRef, useState} from "react";
+import {ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {DepthFirstSearchAlgorithm} from "@/app/algorithms/_services/depth-first-search-algorithm";
 import {MazeNode} from "@/app/algorithms/_services/maze-node";
+import Konva from "konva";
 
 const gridStroke = 2;
 
@@ -12,40 +13,21 @@ interface CanvasSize {
 
 export interface DepthFirstSearchAlgorithmCanvasComponentProps {
     dimension: number;
+    allStepsButtonRef: MutableRefObject<HTMLButtonElement | null>;
 }
 
-export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFirstSearchAlgorithmCanvasComponentProps) {
-    const rowsCount = props.dimension;
-    const columnsCount = props.dimension;
+export function CanvasBackGroundComponent(props: CanvasSize & { color: string }) {
+    return <Layer>
+        <Rect x={0} y={0} width={props.width} height={props.height} fill={props.color}/>
+    </Layer>
+}
 
-    const [nodes, setNodes] = useState([]);
-    const [canvasSize, setCanvasSize] = useState<CanvasSize>({width: 0, height: 0})
-    const divRef = useRef<HTMLDivElement | null>(null);
-
-    useLayoutEffect(() => {
-        const isDivElement = (element: HTMLDivElement | null): element is HTMLDivElement => element !== null;
-        if (!isDivElement(divRef.current)) {
-            return;
-        }
-
-        const canvasWidth = divRef.current.offsetWidth
-        const canvasHeight = divRef.current.offsetHeight
-
-        const canvasSideSize = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
-        setCanvasSize({
-            width: canvasSideSize,
-            height: canvasSideSize
-        })
-    }, [props]);
-
-    useEffect(
-        () => {
-            const grid = new DepthFirstSearchAlgorithm().run(rowsCount, columnsCount);
-            drawGeneratedNodesLayer(canvasSize.width, canvasSize.height, grid, rowsCount, columnsCount);
-        },
-        [canvasSize]
-    );
-
+export function CanvasGridComponent(props: {
+    canvasWidth: number;
+    canvasHeight: number;
+    rowsCount: number;
+    columnsCount: number
+}) {
     function drawGridLayer(canvasWidth: number, canvasHeight: number, rowsCount: number, columnsCount: number) {
         const spaceX = canvasWidth / rowsCount;
         const spaceY = canvasHeight / columnsCount;
@@ -63,6 +45,45 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
 
         return <Layer>{lines}</Layer>
     }
+
+    return drawGridLayer(props.canvasWidth, props.canvasHeight, props.rowsCount, props.columnsCount);
+}
+
+export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFirstSearchAlgorithmCanvasComponentProps) {
+    const rowsCount = props.dimension;
+    const columnsCount = props.dimension;
+
+    const [canvasSize, setCanvasSize] = useState<CanvasSize>({width: 0, height: 0})
+    const canvasWrapperRef = useRef<HTMLDivElement | null>(null);
+    const canvasNodesLayoutRef = useRef<Konva.Layer | null>(null);
+
+    useEffect(() => {
+        if (!props.allStepsButtonRef.current) {
+            return;
+        }
+
+        props.allStepsButtonRef.current!.onclick = (event: MouseEvent) => {
+            const grid = new DepthFirstSearchAlgorithm().run(rowsCount, columnsCount);
+            drawGeneratedNodesLayer(canvasSize.width, canvasSize.height, grid, rowsCount, columnsCount);
+        };
+    }, [props.allStepsButtonRef, canvasSize]);
+
+    useLayoutEffect(() => {
+        const isDivElement = (element: HTMLDivElement | null): element is HTMLDivElement => element !== null;
+        if (!isDivElement(canvasWrapperRef.current)) {
+            return;
+        }
+
+        const canvasWidth = canvasWrapperRef.current.offsetWidth
+        const canvasHeight = canvasWrapperRef.current.offsetHeight
+
+        const canvasSideSize = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
+        setCanvasSize({
+            width: canvasSideSize,
+            height: canvasSideSize
+        })
+        canvasNodesLayoutRef.current?.removeChildren();
+    }, [props.dimension]);
 
     function drawGeneratedNodesLayer(canvasWidth: number, canvasHeight: number, grid: MazeNode[][], rowsCount: number, columnsCount: number) {
         const spaceX = canvasWidth / rowsCount;
@@ -93,24 +114,25 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
                     nodeWidth += gridStrokeOffset;
                 }
 
-                nodes2.push(<Rect x={xOffset}
-                                  y={yOffset}
-                                  width={nodeWidth}
-                                  height={nodeHeight}
-                                  fill='green'/>)
+                nodes2.push(new Konva.Rect({
+                    x: xOffset,
+                    y: yOffset,
+                    width: nodeWidth,
+                    height: nodeHeight,
+                    fill: 'green'
+                }))
             }
         }
-        setNodes(nodes2)
+
+        canvasNodesLayoutRef.current?.removeChildren().add(...nodes2).draw()
     }
 
-    return <div ref={divRef} className="h-full flex justify-center ">
+    return <div ref={canvasWrapperRef} className="h-full flex justify-center ">
         <Stage width={canvasSize.width} height={canvasSize.height}>
-            {
-                drawGridLayer(canvasSize.width, canvasSize.height, rowsCount, columnsCount)
-            }
-            <Layer>
-                {nodes}
-            </Layer>
+            <CanvasBackGroundComponent width={canvasSize.width} height={canvasSize.height} color="gray"/>
+            <CanvasGridComponent canvasWidth={canvasSize.width} canvasHeight={canvasSize.height} rowsCount={rowsCount}
+                                 columnsCount={columnsCount}/>
+            <Layer ref={canvasNodesLayoutRef}/>
         </Stage>
     </div>
 }
