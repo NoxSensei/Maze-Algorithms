@@ -1,7 +1,6 @@
 'use client'
 
-import DepthFirstSearchAlgorithmCanvasComponent
-    from "@/app/algorithms/(children)/depth-first-search/depth-first-search-canvas.component";
+import DepthFirstSearchAlgorithmCanvasComponent from "./depth-first-search-canvas.component";
 import {ChangeEvent, useRef, useState} from "react";
 import {faForwardStep, faForwardFast, faPlay, faPause} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

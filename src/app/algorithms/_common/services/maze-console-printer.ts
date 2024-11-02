@@ -1,4 +1,4 @@
-import {MazeNode} from "./maze-node";
+import {MazeNode} from "../models/maze-node";
 
 export class MazeConsolePrinter {
     /**

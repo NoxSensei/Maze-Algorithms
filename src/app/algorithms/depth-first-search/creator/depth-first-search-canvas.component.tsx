@@ -1,7 +1,7 @@
 import {Layer, Line, Rect, Stage} from "react-konva";
 import {ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {DepthFirstSearchAlgorithm} from "@/app/algorithms/_services/depth-first-search-algorithm";
-import {MazeNode} from "@/app/algorithms/_services/maze-node";
+import {DepthFirstSearchAlgorithm} from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
+import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import Konva from "konva";
 
 const gridStroke = 2;
@@ -63,8 +63,8 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         }
 
         props.allStepsButtonRef.current!.onclick = (event: MouseEvent) => {
-            const grid = new DepthFirstSearchAlgorithm().run(rowsCount, columnsCount);
-            drawGeneratedNodesLayer(canvasSize.width, canvasSize.height, grid, rowsCount, columnsCount);
+            const maze = new DepthFirstSearchAlgorithm().buildPath(rowsCount, columnsCount);
+            drawGeneratedNodesLayer(canvasSize.width, canvasSize.height, maze.grid, rowsCount, columnsCount);
         };
     }, [props.allStepsButtonRef, canvasSize]);
 

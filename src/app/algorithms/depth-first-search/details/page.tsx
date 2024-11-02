@@ -1,8 +1,7 @@
 'use client'
 
-import DepthFirstSearchDescriptionComponent from "@/app/algorithms/(children)/depth-first-search/description.component";
-import DepthFirstSearchAlgorithmCanvasComponent
-    from "@/app/algorithms/(children)/depth-first-search/depth-first-search-canvas.component";
+import DepthFirstSearchDescriptionComponent from "./description.component";
+import DepthFirstSearchAlgorithmCanvasComponent from "../creator/depth-first-search-canvas.component";
 
 export default function DepthFirstSearchAlgorithmDetailsPage() {
     return <div

@@ -1,6 +1,6 @@
 'use client'
 
-import MermaidDiagram from "@/app/algorithms/_components/mermaid-diagram";
+import MermaidDiagram from "@/_common/components/mermaid-diagram";
 
 const diagram = `flowchart TD
     START([Start]) --> SET_GRID_SIZE[/Set grid size/]
