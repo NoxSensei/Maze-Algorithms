@@ -58,7 +58,7 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
     const canvasNodesLayoutRef = useRef<Konva.Layer | null>(null);
 
     useEffect(() => {
-        if (!props.allStepsButtonRef.current) {
+        if (!props.allStepsButtonRef?.current) {
             return;
         }
 
