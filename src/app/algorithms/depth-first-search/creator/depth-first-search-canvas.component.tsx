@@ -1,11 +1,13 @@
 import {Layer, Line, Rect, Stage} from "react-konva";
 import {ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
-import {DepthFirstSearchAlgorithm} from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
+import {
+    DepthFirstSearchAlgorithm
+} from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import Konva from "konva";
 import {Maze} from "@/app/algorithms/_common/models/maze";
 
-const gridStroke = 2;
+const GRID_STROKE = 2;
 
 interface CanvasSize {
     height: number;
@@ -18,7 +20,7 @@ export interface DepthFirstSearchAlgorithmCanvasComponentProps {
     startButtonRef: MutableRefObject<HTMLButtonElement | null>;
 }
 
-export function CanvasBackGroundComponent(props: CanvasSize & { color: string }) {
+export function CanvasBackgroundComponent(props: CanvasSize & { color: string }) {
     return <Layer>
         <Rect x={0} y={0} width={props.width} height={props.height} fill={props.color}/>
     </Layer>
@@ -30,19 +32,34 @@ export function CanvasGridComponent(props: {
     rowsCount: number;
     columnsCount: number
 }) {
-    function drawGridLayer(canvasWidth: number, canvasHeight: number, rowsCount: number, columnsCount: number) {
-        const spaceX = canvasWidth / rowsCount;
-        const spaceY = canvasHeight / columnsCount;
+    const gridColor: string | CanvasGradient = "black";
+    const gridStrokeWidth = 2;
 
-        const lines = [];
-        for (let i = 0; i < rowsCount + 1; i++) {
-            lines.push(<Line points={[0, i * spaceY, canvasWidth, i * spaceY]} stroke="black"
-                             strokeWidth={gridStroke}/>)
+    function drawGridLayer(canvasWidth: number, canvasHeight: number, rowsCount: number, columnsCount: number) {
+        const borderStrokeOffset = gridStrokeWidth * 0.5;
+        const spaceX = (canvasWidth - gridStrokeWidth) / rowsCount;
+        const spaceY = (canvasHeight - gridStrokeWidth) / columnsCount;
+
+        const lines: Line[] = [];
+
+        // creating columns
+        for (let i = 0; i < columnsCount + 1; i++) {
+            const line = <Line
+                points={[0, borderStrokeOffset + i * spaceY, canvasWidth, borderStrokeOffset + i * spaceY]}
+                stroke={gridColor}
+                strokeWidth={gridStrokeWidth}
+            />;
+            lines.push(line)
         }
 
-        for (let i = 0; i < columnsCount + 1; i++) {
-            lines.push(<Line points={[i * spaceX, 0, i * spaceX, canvasHeight]} stroke="black"
-                             strokeWidth={gridStroke}/>)
+        // creating rows
+        for (let i = 0; i < rowsCount + 1; i++) {
+            const line = <Line
+                points={[borderStrokeOffset + i * spaceX, 0, borderStrokeOffset + i * spaceX, canvasHeight]}
+                stroke={gridColor}
+                strokeWidth={gridStrokeWidth}
+            />;
+            lines.push(line)
         }
 
         return <Layer>{lines}</Layer>
@@ -91,6 +108,7 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         const canvasHeight = canvasWrapperRef.current.offsetHeight
 
         const canvasSideSize = canvasWidth > canvasHeight ? canvasHeight : canvasWidth;
+
         setCanvasSize({
             width: canvasSideSize,
             height: canvasSideSize
@@ -102,13 +120,13 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         const spaceX = canvasSize.width / maze.rowsCount;
         const spaceY = canvasSize.height / maze.columnsCount;
 
-        const gridStrokeOffset = gridStroke * 0.5;
+        const gridStrokeOffset = GRID_STROKE * 0.5;
 
         const nodes2 = [];
         for (let i = 0; i < maze.grid.length; i++) {
             for (let j = 0; j < maze.grid[i].length; j++) {
-                let nodeWidth = spaceX - gridStroke;
-                let nodeHeight = spaceY - gridStroke;
+                let nodeWidth = spaceX - GRID_STROKE;
+                let nodeHeight = spaceY - GRID_STROKE;
                 let xOffset = gridStrokeOffset + spaceX * j;
                 let yOffset = gridStrokeOffset + spaceY * i;
 
@@ -144,10 +162,10 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         const spaceX = canvasSize.width / maze.rowsCount;
         const spaceY = canvasSize.height / maze.columnsCount;
 
-        const gridStrokeOffset = gridStroke * 0.5;
+        const gridStrokeOffset = GRID_STROKE * 0.5;
 
-        let nodeWidth = spaceX - gridStroke;
-        let nodeHeight = spaceY - gridStroke;
+        let nodeWidth = spaceX - GRID_STROKE;
+        let nodeHeight = spaceY - GRID_STROKE;
 
         let xOffset = gridStrokeOffset + spaceX * maze.history[0].columnIndex;
         let yOffset = gridStrokeOffset + spaceY * maze.history[0].rowIndex;
@@ -164,9 +182,9 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         canvasNodesLayoutRef.current?.removeChildren().add(nodeShape).draw()
     }
 
-    return <div ref={canvasWrapperRef} className="h-full flex justify-center ">
+    return <div ref={canvasWrapperRef} className="h-full flex justify-center">
         <Stage width={canvasSize.width} height={canvasSize.height}>
-            <CanvasBackGroundComponent width={canvasSize.width} height={canvasSize.height} color="gray"/>
+            <CanvasBackgroundComponent width={canvasSize.width} height={canvasSize.height} color="gray"/>
             <CanvasGridComponent canvasWidth={canvasSize.width} canvasHeight={canvasSize.height} rowsCount={rowsCount}
                                  columnsCount={columnsCount}/>
             <Layer ref={canvasNodesLayoutRef}/>
