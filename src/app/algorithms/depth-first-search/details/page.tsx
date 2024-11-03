@@ -1,7 +1,8 @@
 'use client'
 
 import DepthFirstSearchDescriptionComponent from "./description.component";
-import DepthFirstSearchAlgorithmCanvasComponent from "../creator/depth-first-search-canvas.component";
+import Image from "next/image";
+import depthFirstSearchImage from '../../../../../public/maze-example/depth-first-search.png'
 
 export default function DepthFirstSearchAlgorithmDetailsPage() {
     return <div
@@ -12,8 +13,7 @@ export default function DepthFirstSearchAlgorithmDetailsPage() {
         <div className="grid grid-cols-2 space-x-10 pt-10">
             <DepthFirstSearchDescriptionComponent/>
             <div>
-                {/* TODO use static image */}
-                <DepthFirstSearchAlgorithmCanvasComponent dimension={10}/>
+                <Image src={depthFirstSearchImage as string} alt='Depth First Search Algorithm Image' style={{ backgroundColor: 'black' }}/>
             </div>
         </div>
     </div>
