@@ -3,7 +3,6 @@ import {ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useSt
 import {
     DepthFirstSearchAlgorithm
 } from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
-import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import Konva from "konva";
 import {Maze} from "@/app/algorithms/_common/models/maze";
 
@@ -123,7 +122,7 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         const gridStrokeOffset = GRID_STROKE * 0.5;
         const borderOffset = GRID_STROKE * 0.5;
 
-        const rectangles: Konva.Rect[] = [];
+        const shapes: Konva.Shape[] = [];
         for (let i = 0; i < maze.rowsCount; i++) {
             for (let j = 0; j < maze.columnsCount; j++) {
                 let nodeWidthWithoutStroke = nodeWidth - GRID_STROKE;
@@ -131,33 +130,54 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
                 let nodePositionX = borderOffset + gridStrokeOffset + nodeWidth * j;
                 let nodePositionY = borderOffset + gridStrokeOffset + nodeHeight * i;
 
-                if (!maze.grid[i][j].isWallOnNorth) {
-                    nodePositionY = nodeHeight * i;
-                    nodeHeightWithoutStroke += GRID_STROKE;
-                }
-                if (!maze.grid[i][j].isWallOnEast) {
-                    nodeWidthWithoutStroke += GRID_STROKE;
-                }
-                if (!maze.grid[i][j].isWallOnSouth) {
-                    nodeHeightWithoutStroke += GRID_STROKE;
-                }
-                if (!maze.grid[i][j].isWallOnWest) {
-                    nodePositionX = nodeWidth * j;
-                    nodeWidthWithoutStroke += GRID_STROKE;
-                }
-
                 const rectangle = new Konva.Rect({
                     x: nodePositionX,
                     y: nodePositionY,
                     width: nodeWidthWithoutStroke,
                     height: nodeHeightWithoutStroke,
-                    fill: 'green'
+                    fill: 'green',
                 });
-                rectangles.push(rectangle)
+                shapes.push(rectangle)
+
+                // Extend stroke by 2px to hack antialiasing for removed walls
+                const antialiasingOffset = 2;
+
+                if (!maze.grid[i][j].isWallOnNorth) {
+                    const line = new Konva.Line({
+                        points: [nodePositionX, nodePositionY - gridStrokeOffset, nodePositionX + nodeWidthWithoutStroke, nodePositionY - gridStrokeOffset],
+                        strokeWidth: GRID_STROKE + antialiasingOffset,
+                        stroke: 'green'
+                    });
+                    shapes.push(line);
+                }
+                if (!maze.grid[i][j].isWallOnEast) {
+                    const line = new Konva.Line({
+                        points: [nodePositionX + nodeWidthWithoutStroke + gridStrokeOffset, nodePositionY, nodePositionX + nodeWidthWithoutStroke + gridStrokeOffset, nodePositionY + nodeHeightWithoutStroke],
+                        strokeWidth: GRID_STROKE + antialiasingOffset,
+                        stroke: 'green'
+                    });
+                    shapes.push(line);
+                }
+                if (!maze.grid[i][j].isWallOnSouth) {
+                    const line = new Konva.Line({
+                        points: [nodePositionX, nodePositionY + nodeHeightWithoutStroke + gridStrokeOffset, nodePositionX + nodeWidthWithoutStroke, nodePositionY + nodeHeightWithoutStroke + gridStrokeOffset],
+                        strokeWidth: GRID_STROKE + antialiasingOffset,
+                        stroke: 'green'
+                    });
+                    shapes.push(line);
+                }
+                if (!maze.grid[i][j].isWallOnWest) {
+                    const line = new Konva.Line({
+                        points: [nodePositionX - gridStrokeOffset, nodePositionY, nodePositionX - gridStrokeOffset, nodePositionY + nodeHeightWithoutStroke],
+                        strokeWidth: GRID_STROKE + antialiasingOffset,
+                        stroke: 'green'
+                    });
+                    shapes.push(line);
+                }
             }
         }
 
-        canvasNodesLayoutRef.current?.removeChildren().add(...rectangles).draw()
+        canvasNodesLayoutRef.current?.removeChildren().add(...shapes).draw()
     }
 
     function drawMazeNode(canvasSize: CanvasSize, maze: Maze) {
