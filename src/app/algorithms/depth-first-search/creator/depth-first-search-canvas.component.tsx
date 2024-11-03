@@ -33,7 +33,7 @@ export function CanvasGridComponent(props: {
     columnsCount: number
 }) {
     const gridColor: string | CanvasGradient = "black";
-    const gridStrokeWidth = 2;
+    const gridStrokeWidth = GRID_STROKE;
 
     function drawGridLayer(canvasWidth: number, canvasHeight: number, rowsCount: number, columnsCount: number) {
         const borderStrokeOffset = gridStrokeWidth * 0.5;
@@ -117,45 +117,47 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
     }, [props.dimension]);
 
     function drawCompleteMaze(canvasSize: CanvasSize, maze: Maze) {
-        const spaceX = canvasSize.width / maze.rowsCount;
-        const spaceY = canvasSize.height / maze.columnsCount;
+        const nodeWidth = (canvasSize.width - GRID_STROKE) / maze.rowsCount;
+        const nodeHeight = (canvasSize.height - GRID_STROKE) / maze.columnsCount;
 
         const gridStrokeOffset = GRID_STROKE * 0.5;
+        const borderOffset = GRID_STROKE * 0.5;
 
-        const nodes2 = [];
-        for (let i = 0; i < maze.grid.length; i++) {
-            for (let j = 0; j < maze.grid[i].length; j++) {
-                let nodeWidth = spaceX - GRID_STROKE;
-                let nodeHeight = spaceY - GRID_STROKE;
-                let xOffset = gridStrokeOffset + spaceX * j;
-                let yOffset = gridStrokeOffset + spaceY * i;
+        const rectangles: Konva.Rect[] = [];
+        for (let i = 0; i < maze.rowsCount; i++) {
+            for (let j = 0; j < maze.columnsCount; j++) {
+                let nodeWidthWithoutStroke = nodeWidth - GRID_STROKE;
+                let nodeHeightWithoutStroke = nodeHeight - GRID_STROKE;
+                let nodePositionX = borderOffset + gridStrokeOffset + nodeWidth * j;
+                let nodePositionY = borderOffset + gridStrokeOffset + nodeHeight * i;
 
                 if (!maze.grid[i][j].isWallOnNorth) {
-                    yOffset = spaceY * i;
-                    nodeHeight += gridStrokeOffset;
+                    nodePositionY = nodeHeight * i;
+                    nodeHeightWithoutStroke += GRID_STROKE;
                 }
                 if (!maze.grid[i][j].isWallOnEast) {
-                    nodeWidth += gridStrokeOffset;
+                    nodeWidthWithoutStroke += GRID_STROKE;
                 }
                 if (!maze.grid[i][j].isWallOnSouth) {
-                    nodeHeight += gridStrokeOffset;
+                    nodeHeightWithoutStroke += GRID_STROKE;
                 }
                 if (!maze.grid[i][j].isWallOnWest) {
-                    xOffset = spaceX * j;
-                    nodeWidth += gridStrokeOffset;
+                    nodePositionX = nodeWidth * j;
+                    nodeWidthWithoutStroke += GRID_STROKE;
                 }
 
-                nodes2.push(new Konva.Rect({
-                    x: xOffset,
-                    y: yOffset,
-                    width: nodeWidth,
-                    height: nodeHeight,
+                const rectangle = new Konva.Rect({
+                    x: nodePositionX,
+                    y: nodePositionY,
+                    width: nodeWidthWithoutStroke,
+                    height: nodeHeightWithoutStroke,
                     fill: 'green'
-                }))
+                });
+                rectangles.push(rectangle)
             }
         }
 
-        canvasNodesLayoutRef.current?.removeChildren().add(...nodes2).draw()
+        canvasNodesLayoutRef.current?.removeChildren().add(...rectangles).draw()
     }
 
     function drawMazeNode(canvasSize: CanvasSize, maze: Maze) {
