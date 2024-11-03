@@ -3,6 +3,7 @@ import {ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useSt
 import {DepthFirstSearchAlgorithm} from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import Konva from "konva";
+import {Maze} from "@/app/algorithms/_common/models/maze";
 
 const gridStroke = 2;
 
@@ -14,6 +15,7 @@ interface CanvasSize {
 export interface DepthFirstSearchAlgorithmCanvasComponentProps {
     dimension: number;
     allStepsButtonRef: MutableRefObject<HTMLButtonElement | null>;
+    startButtonRef: MutableRefObject<HTMLButtonElement | null>;
 }
 
 export function CanvasBackGroundComponent(props: CanvasSize & { color: string }) {
@@ -64,9 +66,20 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
 
         props.allStepsButtonRef.current!.onclick = (event: MouseEvent) => {
             const maze = new DepthFirstSearchAlgorithm().buildPath(rowsCount, columnsCount);
-            drawGeneratedNodesLayer(canvasSize.width, canvasSize.height, maze.grid, rowsCount, columnsCount);
+            drawCompleteMaze(canvasSize, maze);
         };
-    }, [props.allStepsButtonRef, canvasSize]);
+    }, [props.allStepsButtonRef, canvasSize, rowsCount, columnsCount]);
+
+    useEffect(() => {
+        if (!props.startButtonRef?.current) {
+            return;
+        }
+
+        props.startButtonRef.current!.onclick = (event: MouseEvent) => {
+            const maze = new DepthFirstSearchAlgorithm().buildPath(rowsCount, columnsCount);
+            drawMazeNode(canvasSize, maze);
+        };
+    }, [props.startButtonRef, canvasSize, rowsCount, columnsCount]);
 
     useLayoutEffect(() => {
         const isDivElement = (element: HTMLDivElement | null): element is HTMLDivElement => element !== null;
@@ -85,31 +98,31 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         canvasNodesLayoutRef.current?.removeChildren();
     }, [props.dimension]);
 
-    function drawGeneratedNodesLayer(canvasWidth: number, canvasHeight: number, grid: MazeNode[][], rowsCount: number, columnsCount: number) {
-        const spaceX = canvasWidth / rowsCount;
-        const spaceY = canvasHeight / columnsCount;
+    function drawCompleteMaze(canvasSize: CanvasSize, maze: Maze) {
+        const spaceX = canvasSize.width / maze.rowsCount;
+        const spaceY = canvasSize.height / maze.columnsCount;
 
         const gridStrokeOffset = gridStroke * 0.5;
 
         const nodes2 = [];
-        for (let i = 0; i < grid.length; i++) {
-            for (let j = 0; j < grid[i].length; j++) {
+        for (let i = 0; i < maze.grid.length; i++) {
+            for (let j = 0; j < maze.grid[i].length; j++) {
                 let nodeWidth = spaceX - gridStroke;
                 let nodeHeight = spaceY - gridStroke;
                 let xOffset = gridStrokeOffset + spaceX * j;
                 let yOffset = gridStrokeOffset + spaceY * i;
 
-                if (!grid[i][j].isWallOnNorth) {
+                if (!maze.grid[i][j].isWallOnNorth) {
                     yOffset = spaceY * i;
                     nodeHeight += gridStrokeOffset;
                 }
-                if (!grid[i][j].isWallOnEast) {
+                if (!maze.grid[i][j].isWallOnEast) {
                     nodeWidth += gridStrokeOffset;
                 }
-                if (!grid[i][j].isWallOnSouth) {
+                if (!maze.grid[i][j].isWallOnSouth) {
                     nodeHeight += gridStrokeOffset;
                 }
-                if (!grid[i][j].isWallOnWest) {
+                if (!maze.grid[i][j].isWallOnWest) {
                     xOffset = spaceX * j;
                     nodeWidth += gridStrokeOffset;
                 }
@@ -125,6 +138,30 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         }
 
         canvasNodesLayoutRef.current?.removeChildren().add(...nodes2).draw()
+    }
+
+    function drawMazeNode(canvasSize: CanvasSize, maze: Maze) {
+        const spaceX = canvasSize.width / maze.rowsCount;
+        const spaceY = canvasSize.height / maze.columnsCount;
+
+        const gridStrokeOffset = gridStroke * 0.5;
+
+        let nodeWidth = spaceX - gridStroke;
+        let nodeHeight = spaceY - gridStroke;
+
+        let xOffset = gridStrokeOffset + spaceX * maze.history[0].columnIndex;
+        let yOffset = gridStrokeOffset + spaceY * maze.history[0].rowIndex;
+
+        const nodeShape = new Konva.Rect({
+            x: xOffset,
+            y: yOffset,
+            width: nodeWidth,
+            height: nodeHeight,
+            fill: 'green'
+        })
+
+
+        canvasNodesLayoutRef.current?.removeChildren().add(nodeShape).draw()
     }
 
     return <div ref={canvasWrapperRef} className="h-full flex justify-center ">

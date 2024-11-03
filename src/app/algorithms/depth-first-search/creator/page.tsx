@@ -42,6 +42,7 @@ export default function DepthFirstSearchAlgorithmCreatorPage() {
     const [gridSize, setGridSize] = useState<number>(defaultGridSize);
     const setGridSizeWithDebounce = debounce((value) => setGridSize(value), 100);
     const allStepsButtonRef = useRef<HTMLButtonElement | null>(null);
+    const startButtonRef = useRef<HTMLButtonElement | null>(null);
 
     function onGridSizeChanged(event: ChangeEvent<HTMLInputElement>) {
         const value = parseInt(event.target.value);
@@ -72,7 +73,7 @@ export default function DepthFirstSearchAlgorithmCreatorPage() {
                 <button>
                     <FontAwesomeIcon icon={faPause}/>
                 </button>
-                <button>
+                <button ref={startButtonRef}>
                     <FontAwesomeIcon icon={faPlay}/>
                 </button>
                 <button>
@@ -100,7 +101,9 @@ export default function DepthFirstSearchAlgorithmCreatorPage() {
             </div>
         </div>
         <div className="h-5/6">
-            <DepthFirstSearchAlgorithmCanvasComponent dimension={gridSize} allStepsButtonRef={allStepsButtonRef}/>
+            <DepthFirstSearchAlgorithmCanvasComponent dimension={gridSize}
+                                                      allStepsButtonRef={allStepsButtonRef}
+                                                      startButtonRef={startButtonRef}/>
         </div>
     </div>
 }
