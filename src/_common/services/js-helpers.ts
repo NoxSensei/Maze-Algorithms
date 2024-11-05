@@ -9,4 +9,8 @@ export class JsHelpers {
             .sort((a, b) => a.sort - b.sort)
             .map(({value}) => value)
     }
+
+    public static async sleep(ms: number): Promise<void> {
+        await new Promise(resolve => setTimeout(resolve, ms));
+    }
 }
