@@ -13,4 +13,15 @@ export class JsHelpers {
     public static async sleep(ms: number): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, ms));
     }
+
+    public static wrapWithDebounce<T extends (...args: any[]) => any>(method: T, timeoutInMs: number): (...args: Parameters<T>[number][]) => ReturnType<T> {
+        let timerId;
+        return (...args) => {
+            clearTimeout(timerId);
+            const callback = () => {
+                method(...args)
+            };
+            timerId = setTimeout(callback, timeoutInMs);
+        }
+    }
 }

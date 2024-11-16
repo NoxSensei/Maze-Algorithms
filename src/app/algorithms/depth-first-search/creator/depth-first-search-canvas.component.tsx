@@ -1,5 +1,5 @@
 import {Layer, Line, Rect, Stage} from "react-konva";
-import {ChangeEvent, MutableRefObject, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {ChangeEvent, MutableRefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {
     DepthFirstSearchAlgorithm
 } from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
@@ -7,6 +7,7 @@ import Konva from "konva";
 import {Maze} from "@/app/algorithms/_common/models/maze";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import {JsHelpers} from "@/_common/services/js-helpers";
+import {DepthFirstSearchContext} from "@/app/algorithms/depth-first-search/creator/context";
 
 const GRID_STROKE = 2;
 
@@ -75,8 +76,13 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
 
     const [canvasSize, setCanvasSize] = useState<CanvasSize>({width: 0, height: 0})
     const [maze, setMaze] = useState<Maze>();
+    const [isPaused, setIsPaused] = useState<boolean>(true);
+    const isPausedRef = useRef(isPaused);
+    const [lastProcessedNodeIndex2, setLastProcessedNodeIndex2] = useState<number | null>(null);
     const canvasWrapperRef = useRef<HTMLDivElement | null>(null);
     const canvasNodesLayoutRef = useRef<Konva.Layer | null>(null);
+    const depthFirstSearchContext = useContext(DepthFirstSearchContext);
+
     const depthFirstSearchAlgorithm = new DepthFirstSearchAlgorithm();
 
     useEffect(() => {
@@ -93,16 +99,23 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         };
     }, [props.allStepsButtonRef, canvasSize, maze]);
 
-    useEffect( () => {
-        if (!props.startButtonRef?.current) {
+    useLayoutEffect(() => {
+        isPausedRef.current = isPaused;
+        if (isPaused) {
             return;
         }
 
-        props.startButtonRef.current!.onclick = (event: MouseEvent) => {
-            const maze = depthFirstSearchAlgorithm.buildPath(rowsCount, columnsCount);
-            drawMazeNodes(canvasSize, maze);
-        };
-    }, [props.startButtonRef, canvasSize, rowsCount, columnsCount]);
+        const maze = depthFirstSearchAlgorithm.buildPath(rowsCount, columnsCount);
+        canvasNodesLayoutRef.current?.removeChildren();
+
+        const state = { lastProcessedNodeIndex: lastProcessedNodeIndex2};
+        const {lastProcessedNodeIndex} = drawMazeNodes(canvasSize, maze, state);
+        setLastProcessedNodeIndex2(lastProcessedNodeIndex);
+    }, [isPaused]);
+
+    useEffect(() => {
+        setIsPaused(!depthFirstSearchContext.isPlayClicked)
+    }, [depthFirstSearchContext.isPlayClicked])
 
     useLayoutEffect(() => {
         const isDivElement = (element: HTMLDivElement | null): element is HTMLDivElement => element !== null;
@@ -142,13 +155,22 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         canvasNodesLayoutRef.current?.removeChildren().add(...shapes).draw()
     }
 
-    async function drawMazeNodes(canvasSize: CanvasSize, maze: Maze) {
-        canvasNodesLayoutRef.current?.removeChildren();
-        for (const node of maze.history) {
+    async function drawMazeNodes(canvasSize: CanvasSize, maze: Maze, state: { lastProcessedNodeIndex: number | null; }) {
+        let lastProcessedNodeIndex = 0;
+        const nodesToProcess = maze.history.slice(state.lastProcessedNodeIndex ?? 0);
+        for (const [index, node] of nodesToProcess.entries()) {
+            console.log("Is paused in drawing " + isPausedRef.current)
+            if (isPausedRef.current) {
+                lastProcessedNodeIndex = index;
+                break;
+            }
+
             const shapes = drawMazeNode(canvasSize, maze, node);
             canvasNodesLayoutRef.current?.add(...shapes).draw();
             await JsHelpers.sleep(200);
         }
+
+        return {lastProcessedNodeIndex};
     }
 
     function drawMazeNode(canvasSize: CanvasSize, maze: Maze, node: MazeNode): Konva.Shape[] {
