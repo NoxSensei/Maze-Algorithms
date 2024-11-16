@@ -1,5 +1,5 @@
-import {Layer, Line, Rect, Stage} from "react-konva";
-import {ChangeEvent, MutableRefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
+import {Layer, Stage} from "react-konva";
+import {MutableRefObject, useContext, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {
     DepthFirstSearchAlgorithm
 } from "@/app/algorithms/depth-first-search/creator/_services/depth-first-search-algorithm";
@@ -8,66 +8,15 @@ import {Maze} from "@/app/algorithms/_common/models/maze";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import {JsHelpers} from "@/_common/services/js-helpers";
 import {DepthFirstSearchContext} from "@/app/algorithms/depth-first-search/creator/context";
+import {KonvaBackgroundComponent} from "@/_common/components/konva/konva-background";
+import {KonvaGridComponent} from "@/_common/components/konva/konva-grid";
 
 const GRID_STROKE = 2;
-
-interface CanvasSize {
-    height: number;
-    width: number;
-}
 
 export interface DepthFirstSearchAlgorithmCanvasComponentProps {
     dimension: number;
     allStepsButtonRef: MutableRefObject<HTMLButtonElement | null>;
     startButtonRef: MutableRefObject<HTMLButtonElement | null>;
-}
-
-export function CanvasBackgroundComponent(props: CanvasSize & { color: string }) {
-    return <Layer>
-        <Rect x={0} y={0} width={props.width} height={props.height} fill={props.color}/>
-    </Layer>
-}
-
-export function CanvasGridComponent(props: {
-    canvasWidth: number;
-    canvasHeight: number;
-    rowsCount: number;
-    columnsCount: number
-}) {
-    const gridColor: string | CanvasGradient = "black";
-    const gridStrokeWidth = GRID_STROKE;
-
-    function drawGridLayer(canvasWidth: number, canvasHeight: number, rowsCount: number, columnsCount: number) {
-        const borderStrokeOffset = gridStrokeWidth * 0.5;
-        const spaceX = (canvasWidth - gridStrokeWidth) / rowsCount;
-        const spaceY = (canvasHeight - gridStrokeWidth) / columnsCount;
-
-        const lines: Line[] = [];
-
-        // creating columns
-        for (let i = 0; i < columnsCount + 1; i++) {
-            const line = <Line
-                points={[0, borderStrokeOffset + i * spaceY, canvasWidth, borderStrokeOffset + i * spaceY]}
-                stroke={gridColor}
-                strokeWidth={gridStrokeWidth}
-            />;
-            lines.push(line)
-        }
-
-        // creating rows
-        for (let i = 0; i < rowsCount + 1; i++) {
-            const line = <Line
-                points={[borderStrokeOffset + i * spaceX, 0, borderStrokeOffset + i * spaceX, canvasHeight]}
-                stroke={gridColor}
-                strokeWidth={gridStrokeWidth}
-            />;
-            lines.push(line)
-        }
-
-        return <Layer>{lines}</Layer>
-    }
-
-    return drawGridLayer(props.canvasWidth, props.canvasHeight, props.rowsCount, props.columnsCount);
 }
 
 export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFirstSearchAlgorithmCanvasComponentProps) {
@@ -76,14 +25,11 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
 
     const [canvasSize, setCanvasSize] = useState<CanvasSize>({width: 0, height: 0})
     const [maze, setMaze] = useState<Maze>();
-    const [isPaused, setIsPaused] = useState<boolean>(true);
-    const isPausedRef = useRef(isPaused);
-    const [lastProcessedNodeIndex2, setLastProcessedNodeIndex2] = useState<number | null>(null);
+    const [lastProcessedNodeIndex, setLastProcessedNodeIndex] = useState<number>(0);
+    const isPausedRef = useRef({isPaused: true});
     const canvasWrapperRef = useRef<HTMLDivElement | null>(null);
     const canvasNodesLayoutRef = useRef<Konva.Layer | null>(null);
     const depthFirstSearchContext = useContext(DepthFirstSearchContext);
-
-    const depthFirstSearchAlgorithm = new DepthFirstSearchAlgorithm();
 
     useEffect(() => {
         if (!props.allStepsButtonRef?.current) {
@@ -100,22 +46,19 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
     }, [props.allStepsButtonRef, canvasSize, maze]);
 
     useLayoutEffect(() => {
-        isPausedRef.current = isPaused;
-        if (isPaused) {
+        isPausedRef.current.isPaused = !depthFirstSearchContext.isPlayClicked;
+        if (isPausedRef.current.isPaused) {
             return;
         }
 
-        const maze = depthFirstSearchAlgorithm.buildPath(rowsCount, columnsCount);
-        canvasNodesLayoutRef.current?.removeChildren();
+        if (!maze) {
+            return;
+        }
 
-        const state = { lastProcessedNodeIndex: lastProcessedNodeIndex2};
-        const {lastProcessedNodeIndex} = drawMazeNodes(canvasSize, maze, state);
-        setLastProcessedNodeIndex2(lastProcessedNodeIndex);
-    }, [isPaused]);
-
-    useEffect(() => {
-        setIsPaused(!depthFirstSearchContext.isPlayClicked)
-    }, [depthFirstSearchContext.isPlayClicked])
+        drawMazeNodes(canvasSize, maze, lastProcessedNodeIndex).then(({lastNodeIndex}) => {
+            setLastProcessedNodeIndex(lastNodeIndex);
+        });
+    }, [depthFirstSearchContext.isPlayClicked]);
 
     useLayoutEffect(() => {
         const isDivElement = (element: HTMLDivElement | null): element is HTMLDivElement => element !== null;
@@ -155,13 +98,12 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
         canvasNodesLayoutRef.current?.removeChildren().add(...shapes).draw()
     }
 
-    async function drawMazeNodes(canvasSize: CanvasSize, maze: Maze, state: { lastProcessedNodeIndex: number | null; }) {
-        let lastProcessedNodeIndex = 0;
-        const nodesToProcess = maze.history.slice(state.lastProcessedNodeIndex ?? 0);
+    async function drawMazeNodes(canvasSize: CanvasSize, maze: Maze, lastProcessedNodeIndex: number) {
+        let lastNodeIndex = 0;
+        const nodesToProcess = maze.history.slice(lastProcessedNodeIndex ?? 0);
         for (const [index, node] of nodesToProcess.entries()) {
-            console.log("Is paused in drawing " + isPausedRef.current)
-            if (isPausedRef.current) {
-                lastProcessedNodeIndex = index;
+            if (isPausedRef.current.isPaused) {
+                lastNodeIndex = lastProcessedNodeIndex + index;
                 break;
             }
 
@@ -170,7 +112,7 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
             await JsHelpers.sleep(200);
         }
 
-        return {lastProcessedNodeIndex};
+        return {lastNodeIndex};
     }
 
     function drawMazeNode(canvasSize: CanvasSize, maze: Maze, node: MazeNode): Konva.Shape[] {
@@ -237,9 +179,9 @@ export default function DepthFirstSearchAlgorithmCanvasComponent(props: DepthFir
 
     return <div ref={canvasWrapperRef} className="h-full flex justify-center">
         <Stage width={canvasSize.width} height={canvasSize.height}>
-            <CanvasBackgroundComponent width={canvasSize.width} height={canvasSize.height} color="gray"/>
-            <CanvasGridComponent canvasWidth={canvasSize.width} canvasHeight={canvasSize.height} rowsCount={rowsCount}
-                                 columnsCount={columnsCount}/>
+            <KonvaBackgroundComponent width={canvasSize.width} height={canvasSize.height} color="gray"/>
+            <KonvaGridComponent width={canvasSize.width} height={canvasSize.height} rowsCount={rowsCount}
+                                columnsCount={columnsCount} gridStrokeSize={GRID_STROKE}/>
             <Layer ref={canvasNodesLayoutRef}/>
         </Stage>
     </div>

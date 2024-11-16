@@ -57,7 +57,7 @@ export default function CanvasMenuComponent(props: {
         </div>
 
         <div className="flex flex-col space-y-2 p-2 w-80  h-20">
-            <span className="flex justify-center h-4">Generation Speed</span>
+            <span className="flex justify-center h-4">Drawing Speed</span>
             <input type="range" className="w-full" min="1" max="3" step="1"/>
             <ul className="flex justify-between w-full px-[10px]">
                 <li className="flex justify-center relative">

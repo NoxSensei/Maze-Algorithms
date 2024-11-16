@@ -10,7 +10,7 @@ function RenderInfoMenuItemsComponent({itemsTitles, pathPrefix}: {
 }) {
     return itemsTitles.map(itemTitle => {
         const itemPath = itemTitle.toLowerCase().replaceAll(' ', '-')
-        return <Link href={`${pathPrefix}/${itemPath}`}>
+        return <Link href={`${pathPrefix}/${itemPath}`} key={itemTitle}>
             {itemTitle}
         </Link>
     })
