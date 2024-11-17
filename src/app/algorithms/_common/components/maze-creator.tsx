@@ -17,13 +17,19 @@ export default function MazeCreatorComponent(props: MazeCreatorComponentProps) {
     const [isPlaySelected, setIsPlaySelected] = useState<boolean>(false);
 
     const context: MazeCreatorContextData = {
+        reloadButton: {
+            onClick: () => {
+            }
+        },
         playButton: {
+            onClick: () => {
+            },
             isSelected: isPlaySelected,
             setIsSelected: setIsPlaySelected
         },
         forwardFastButton: {
             onClick: () => {
-            },
+            }
         },
         grid: {
             size: gridSize,

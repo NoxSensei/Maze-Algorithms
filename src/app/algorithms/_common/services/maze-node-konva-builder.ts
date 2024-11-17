@@ -10,8 +10,8 @@ export interface DrawMazeNodeParams {
     color: string | CanvasGradient;
 }
 
-export class MazeNodePainter {
-    public static getMazeNodeAsKonvaShape(params: DrawMazeNodeParams): Konva.Shape[] {
+export class MazeNodeKonvaBuilder {
+    public static getNodesAsKonvaShapes(params: DrawMazeNodeParams): Konva.Shape[] {
         const nodeWidth = (params.canvasSize.width - params.gridStroke) / params.maze.rowsCount;
         const nodeHeight = (params.canvasSize.height - params.gridStroke) / params.maze.columnsCount;
 

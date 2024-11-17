@@ -2,9 +2,13 @@ import {Context, createContext, Dispatch, MouseEvent, SetStateAction} from "reac
 import {DrawingSpeed} from "@/app/algorithms/_common/models/drawing-speed";
 
 export interface MazeCreatorContextData {
+    reloadButton: {
+        onClick: (event: MouseEvent<HTMLButtonElement>) => void;
+    };
     playButton: {
         isSelected: boolean;
         setIsSelected: Dispatch<SetStateAction<boolean>>;
+        onClick: (event: MouseEvent<HTMLButtonElement>) => void;
     };
     forwardFastButton: {
         onClick: (event: MouseEvent<HTMLButtonElement>) => void;
