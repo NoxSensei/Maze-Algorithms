@@ -53,7 +53,10 @@ export default function MazeCreatorPainterComponent(props: MazeCreatorPainterCom
             }
 
             removeNodesFromCanvas();
-            drawMazeNodes(canvasSize, maze);
+            drawMazeNodes(canvasSize, maze).then(() => {
+                mazeCreatorContext.playButton.setIsSelected(false);
+                isStoppedRef.current = true;
+            });
         }
 
         mazeCreatorContext.forwardFastButton.onClick = () => {
