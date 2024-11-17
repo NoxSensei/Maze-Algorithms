@@ -25,9 +25,12 @@ export function PlayButtonComponent() {
 
     return <>
         <button onClick={onPlayButtonClickHandler}>
-            <FontAwesomeIcon icon={icon}/>
+            <div className={"border border-gray-200 hover:bg-gray-100 px-4 py-2"}>
+                <FontAwesomeIcon icon={icon}/>
+            </div>
         </button>
-    </>;
+    </>
+        ;
 }
 
 export default function MazeCreatorMenuComponent() {
@@ -54,25 +57,33 @@ export default function MazeCreatorMenuComponent() {
                 valueSetter={mazeCreatorContext.grid.setSize}/>
         </div>
 
-        <div className="flex justify-center space-x-2">
+        <div className="inline-flex justify-center items-center">
             <button
                 onClick={(event) => mazeCreatorContext.reloadButton.onClick(event)}
                 disabled={mazeCreatorContext.playButton.isSelected}
             >
-                <FontAwesomeIcon
-                    icon={faRotate}
-                    style={mazeCreatorContext.playButton.isSelected ? disabledStyle : {}}
-                />
+                <div className={"border border-gray-200 rounded-s-lg hover:bg-gray-100 px-4 py-2"}>
+
+                    <FontAwesomeIcon
+                        icon={faRotate}
+                        style={mazeCreatorContext.playButton.isSelected ? disabledStyle : {}}
+                    />
+
+                </div>
             </button>
+
             <PlayButtonComponent/>
+
             <button
                 onClick={(event) => mazeCreatorContext.forwardFastButton.onClick(event)}
                 disabled={mazeCreatorContext.playButton.isSelected}
             >
-                <FontAwesomeIcon
-                    icon={faForwardFast}
-                    style={mazeCreatorContext.playButton.isSelected ? disabledStyle : {}}
-                />
+                <div className={"border border-gray-200 rounded-e-lg hover:bg-gray-100 px-4 py-2"}>
+                    <FontAwesomeIcon
+                        icon={faForwardFast}
+                        style={mazeCreatorContext.playButton.isSelected ? disabledStyle : {}}
+                    />
+                </div>
             </button>
         </div>
 
