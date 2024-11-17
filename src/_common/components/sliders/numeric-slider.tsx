@@ -2,11 +2,17 @@ import {ChangeEvent, Dispatch, SetStateAction} from "react";
 import {JsHelpers} from "@/_common/services/js-helpers";
 
 export interface NumericSliderComponentProps {
+    title: string;
     minValue: number;
     maxValue: number;
     stepValue: number;
     defaultValue: number;
-    gridSizeSetter: Dispatch<SetStateAction<number>>;
+    valueSetter: Dispatch<SetStateAction<number>>;
+
+    /**
+     * @default 100
+     */
+    debounceInMs?: number;
 }
 
 export default function NumericSliderComponent(props: NumericSliderComponentProps) {
@@ -16,15 +22,15 @@ export default function NumericSliderComponent(props: NumericSliderComponentProp
     }
     options.push(props.maxValue);
 
-    const setGridSizeWithDebounce = JsHelpers.wrapWithDebounce((value) => props.gridSizeSetter(value), 100);
+    const valueSetterWithDebounce = JsHelpers.wrapWithDebounce((value) => props.valueSetter(value), props.debounceInMs ?? 100);
 
     function onValueChanged(event: ChangeEvent<HTMLInputElement>): void {
         const value = parseInt(event.target.value);
-        setGridSizeWithDebounce(value);
+        valueSetterWithDebounce(value);
     }
 
     return <>
-        <span className="flex justify-center h-4">Grid Size</span>
+        <span className="flex justify-center h-4">{props.title}</span>
         <input type="range"
                min={props.minValue}
                max={props.maxValue}
