@@ -12,14 +12,13 @@ import {DrawingSpeed} from "@/app/algorithms/_common/models/drawing-speed";
 import {useCanvasSize} from "@/app/algorithms/_common/hooks/canvas-size";
 import {useRefDrawingSpeed} from "@/app/algorithms/_common/hooks/drawing-speed";
 
-const GRID_STROKE = 2;
-
 export interface MazeCreatorPainterComponentProps {
     mazeAlgorithm: MazeAlgorithm;
 }
 
 export default function MazeCreatorPainterComponent(props: MazeCreatorPainterComponentProps) {
     const nodeColor = 'green';
+    const gridStroke = 2;
 
     const mazeCreatorContext = useContext(MazeCreatorContext);
     const [maze, setMaze] = useState<Maze>();
@@ -86,7 +85,7 @@ export default function MazeCreatorPainterComponent(props: MazeCreatorPainterCom
                     canvasSize,
                     maze,
                     node,
-                    gridStroke: GRID_STROKE,
+                    gridStroke: gridStroke,
                     color: nodeColor
                 })
                 shapes.push(...nodeShapes);
@@ -106,7 +105,7 @@ export default function MazeCreatorPainterComponent(props: MazeCreatorPainterCom
                 canvasSize,
                 maze,
                 node,
-                gridStroke: GRID_STROKE,
+                gridStroke: gridStroke,
                 color: nodeColor
             });
             canvasNodesLayoutRef.current?.add(...shapes).draw();
@@ -146,7 +145,7 @@ export default function MazeCreatorPainterComponent(props: MazeCreatorPainterCom
                 height={canvasSize.height}
                 rowsCount={rowsCount}
                 columnsCount={columnsCount}
-                gridStrokeSize={GRID_STROKE}
+                gridStrokeSize={gridStroke}
             />
             <Layer ref={canvasNodesLayoutRef}/>
         </Stage>
