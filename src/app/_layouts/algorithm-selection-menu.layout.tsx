@@ -10,6 +10,7 @@ export default function AlgorithmSelectionMenuLayout({children}: Readonly<{ chil
                     <FontAwesomeIcon icon={faHouse} className="h-full"/>
                 </Link>
                 <Link href="/algorithms/depth-first-search">Depth First Search</Link>
+                <Link href="/algorithms/eller">Eller</Link>
                 <Link href="/algorithms/prim">Prim</Link>
                 <Link href="/algorithms/kruskal">Kruskal</Link>
                 <Link href="/algorithms/hunt-and-kill">Hunt And Kill</Link>

@@ -3,6 +3,14 @@ export class JsHelpers {
         return Math.floor(Math.random() * (max + 1 - min) + min);
     }
 
+    /**
+     * @param probability value from (0, 1>
+     */
+    public static isRandomChanceMet(probability: number){
+        const randomValue = Math.random();
+        return randomValue <= probability;
+    }
+
     public static shuffleArray<T>(array: T[]): T[] {
         return Array.from<T>(array)
             .map(value => ({value, sort: Math.random()}))
