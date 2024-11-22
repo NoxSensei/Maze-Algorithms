@@ -16,5 +16,6 @@ export class Maze {
         }
 
         this.grid = grid;
+        this.history = [];
     }
 }

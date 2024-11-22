@@ -1,7 +1,7 @@
 'use client'
 
-import MazeCreatorComponent from "@/app/algorithms/_common/components/maze-creator";
 import {EllerAlgorithm} from "@/app/algorithms/eller/creator/_services/eller-algorithm";
+import {MazeCreatorComponent} from "@/app/algorithms/_common/components/maze-creator";
 
 
 export default function EllerAlgorithmCreatorPage() {

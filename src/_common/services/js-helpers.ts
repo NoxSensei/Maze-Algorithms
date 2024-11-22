@@ -22,12 +22,12 @@ export class JsHelpers {
         await new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    public static wrapWithDebounce<T extends (...args: any[]) => any>(method: T, timeoutInMs: number): (...args: Parameters<T>[number][]) => ReturnType<T> {
-        let timerId;
-        return (...args) => {
+    public static wrapWithDebounce<T extends (...args: any[]) => any>(method: T, timeoutInMs: number): (...args: Parameters<T>[number][]) => void {
+        let timerId: NodeJS.Timeout;
+        return (...args): void => {
             clearTimeout(timerId);
             const callback = () => {
-                method(...args)
+               return method(...args)
             };
             timerId = setTimeout(callback, timeoutInMs);
         }

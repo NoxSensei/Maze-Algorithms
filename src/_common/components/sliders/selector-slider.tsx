@@ -1,10 +1,11 @@
 import {ChangeEvent, Dispatch, SetStateAction} from "react";
 import {JsHelpers} from "@/_common/services/js-helpers";
+import {DrawingSpeed} from "@/app/algorithms/_common/models/drawing-speed";
 
 export interface SelectorSliderComponentProps {
     title: string;
     values: string[];
-    valueSetter: Dispatch<SetStateAction<number>>;
+    valueSetter: Dispatch<SetStateAction<DrawingSpeed>>;
 
     /**
      * @default 100

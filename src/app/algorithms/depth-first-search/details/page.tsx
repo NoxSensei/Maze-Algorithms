@@ -13,7 +13,7 @@ export default function DepthFirstSearchAlgorithmDetailsPage() {
         <div className="grid grid-cols-2 space-x-10 pt-10">
             <DepthFirstSearchDescriptionComponent/>
             <div>
-                <Image src={depthFirstSearchImage as string} alt='Depth First Search Algorithm Image' style={{ backgroundColor: 'black' }}/>
+                <Image src={depthFirstSearchImage as unknown as string} alt='Depth First Search Algorithm Image' style={{ backgroundColor: 'black' }}/>
             </div>
         </div>
     </div>

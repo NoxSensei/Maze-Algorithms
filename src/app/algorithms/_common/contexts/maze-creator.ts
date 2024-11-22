@@ -19,8 +19,8 @@ export interface MazeCreatorContextData {
     };
     drawing: {
         speed: DrawingSpeed;
-        setSpeed: Dispatch<SetStateAction<number>>;
+        setSpeed: Dispatch<SetStateAction<DrawingSpeed>>;
     }
 }
 
-export const MazeCreatorContext = createContext({}) as Context<MazeCreatorContextData>;
+export const MazeCreatorContext = createContext({}) as unknown as Context<MazeCreatorContextData>;

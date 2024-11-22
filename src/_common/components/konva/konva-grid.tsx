@@ -1,4 +1,5 @@
 import {Layer, Line} from "react-konva";
+import {ReactNode} from "react";
 
 export interface KonvaGridComponentProps extends CanvasSize {
     rowsCount: number;
@@ -19,7 +20,7 @@ export function KonvaGridComponent(props: KonvaGridComponentProps) {
         const spaceX = (canvasWidth - props.gridStrokeSize) / rowsCount;
         const spaceY = (canvasHeight - props.gridStrokeSize) / columnsCount;
 
-        const lines: Line[] = [];
+        const lines: ReactNode[] = [];
 
         // creating columns
         for (let columnIndex = 0; columnIndex < columnsCount + 1; columnIndex++) {

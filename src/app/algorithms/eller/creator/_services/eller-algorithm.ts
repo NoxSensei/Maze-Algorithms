@@ -71,15 +71,15 @@ export class EllerAlgorithm extends MazeAlgorithm {
             }
 
             const groups = new Set();
-            const counts = {};
+            const counts: any = {};
             for (const [index, node] of row.entries()) {
                 groups.add(node.groupId);
 
-                if (counts[node.groupId]) {
-                    counts[node.groupId].count++;
-                    counts[node.groupId].nodes.push(node);
+                if (counts[node.groupId!]) {
+                    counts[node.groupId!].count++;
+                    counts[node.groupId!].nodes.push(node);
                 } else {
-                    counts[node.groupId] = {
+                    counts[node.groupId!] = {
                         count: 1,
                         nodes: [node]
                     }
@@ -87,16 +87,16 @@ export class EllerAlgorithm extends MazeAlgorithm {
             }
 
             [...groups].forEach(group => {
-                const downWallsCount = JsHelpers.randomInt(1, counts[group].count);
-                const nodes = JsHelpers.shuffleArray(counts[group].nodes).slice(0, downWallsCount);
-                nodes.forEach(node => {
-                    const nodeOnTheSouth = maze.grid[node.rowIndex + 1][node.columnIndex];
+                const downWallsCount = JsHelpers.randomInt(1, counts[group as number].count);
+                const nodes = JsHelpers.shuffleArray(counts[group as number].nodes).slice(0, downWallsCount) as ExtendedMazeNode[];
+                nodes.forEach(((node) => {
+                    const nodeOnTheSouth = maze.grid[node.rowIndex + 1][node.columnIndex] as ExtendedMazeNode;
                     node.isWallOnSouth = false;
                     nodeOnTheSouth.isWallOnNorth = false;
                     nodeOnTheSouth.groupId = node.groupId;
 
                     visitedNodes.add(nodeOnTheSouth);
-                })
+                }))
             })
         }
     }
