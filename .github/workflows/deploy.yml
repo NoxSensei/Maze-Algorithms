@@ -23,15 +23,13 @@ jobs:
           npm ci
           npm run build
       - name: Disable Jekyll processing # Lets the _next folder being copied to the final website
-        run: |
-          ls -la ./out
-          echo "test" > ./out/.nojekyll
-          ls -la ./out
+        run: echo "test" > ./out/.nojekyll
       - uses: actions/upload-artifact@v4
         name: Push build data
         with:
           name: build-data
           path: out
+          include-hidden-files: true
 
   deploy:
     runs-on: ubuntu-latest
