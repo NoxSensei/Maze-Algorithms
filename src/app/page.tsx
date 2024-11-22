@@ -7,7 +7,7 @@ export default function HomePage() {
     const {push} = useRouter();
 
     useEffect(() => {
-        push('/');
+        push('/algorithms');
     }, [push]);
 
     return <></>;
