@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "export",
-    basePath: process.env.PUBLIC_BASE_PATH || ''
+    basePath: "Maze-Algorightms"
 };
 
 export default nextConfig;
