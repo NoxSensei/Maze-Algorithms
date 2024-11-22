@@ -6,7 +6,7 @@ export default function AlgorithmSelectionMenuLayout({children}: Readonly<{ chil
     return (<div className="grid grid-cols-8">
         <div className="col-span-1 bg-black overflow-y-auto">
             <nav className="flex flex-col pt-5 pl-5">
-                <Link href="/algorithms" className="h-10">
+                <Link href="/" className="h-10">
                     <FontAwesomeIcon icon={faHouse} className="h-full"/>
                 </Link>
                 <Link href="/algorithms/depth-first-search">Depth First Search</Link>
