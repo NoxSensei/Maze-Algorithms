@@ -19,9 +19,10 @@ jobs:
           node-version: 20.12.2
       - name: Build ui
         run: |
-          export PUBLIC_BASE_PATH=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
           npm ci
           npm run build
+        env:
+          PUBLIC_BASE_PATH: "/$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"
       - uses: actions/upload-artifact@v4
         name: Push build data
         with:
