@@ -20,6 +20,7 @@ jobs:
       - name: Build ui
         run: |
           PUBLIC_BASE_PATH=$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)
+          echo $PUBLIC_BASE_PATH
           npm ci
           npm run build
       - uses: actions/upload-artifact@v4
