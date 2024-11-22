@@ -8,7 +8,7 @@ export default function HomePage() {
 
     useEffect(() => {
         push('/');
-    });
+    }, [push]);
 
     return <></>;
 }
