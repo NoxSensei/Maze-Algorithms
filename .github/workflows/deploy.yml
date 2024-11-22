@@ -24,7 +24,7 @@ jobs:
           npm run build
       - name: Disable Jekyll processing # Lets the _next folder being copied to the final website
         run: |
-          cat "test" > ./out/.nojekyll
+          echo "test" > ./out/.nojekyll
       - uses: actions/upload-artifact@v4
         name: Push build data
         with:
