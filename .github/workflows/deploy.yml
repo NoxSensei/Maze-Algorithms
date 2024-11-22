@@ -22,6 +22,8 @@ jobs:
           export PUBLIC_BASE_PATH="/$(echo $GITHUB_REPOSITORY | cut -d'/' -f2)"
           npm ci
           npm run build
+      - name: Disable Jekyll processing # Lets the _next folder being copied to the final website
+        run: |
           touch ./out/.nojekyll
       - uses: actions/upload-artifact@v4
         name: Push build data
