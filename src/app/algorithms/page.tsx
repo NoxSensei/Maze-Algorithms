@@ -1,3 +1,12 @@
+import {useRouter} from "next/navigation";
+import {useEffect} from "react";
+
 export default function AlgorithmsPage() {
-    return <></>
+    const {push} = useRouter();
+
+    useEffect(() => {
+        push('/');
+    }, [push]);
+
+    return <></>;
 }
