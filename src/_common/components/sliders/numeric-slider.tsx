@@ -40,7 +40,7 @@ export default function NumericSliderComponent(props: NumericSliderComponentProp
         <ul className="flex justify-between">
             {
                 options.map((option) =>
-                    <li className={"flex-1"} key={option}>
+                    <li className="flex-1" key={option}>
                         {option}
                     </li>)
             }
