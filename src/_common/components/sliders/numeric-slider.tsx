@@ -29,7 +29,7 @@ export default function NumericSliderComponent(props: NumericSliderComponentProp
         valueSetterWithDebounce(value);
     }
 
-    return <>
+    return <div className="flex flex-col">
         <span className="flex justify-center h-4">{props.title}</span>
         <input type="range"
                min={props.minValue}
@@ -37,10 +37,13 @@ export default function NumericSliderComponent(props: NumericSliderComponentProp
                step={props.stepValue}
                defaultValue={props.defaultValue}
                onChange={onValueChanged}/>
-        <ul className="flex justify-between w-full px-[10px]">
-            {options.map((option) => <li key={option} className="flex justify-center relative">
-                <span className="absolute">{option}</span>
-            </li>)}
+        <ul className="flex justify-between">
+            {
+                options.map((option) =>
+                    <li className={"flex-1"} key={option}>
+                        {option}
+                    </li>)
+            }
         </ul>
-    </>
+    </div>
 }

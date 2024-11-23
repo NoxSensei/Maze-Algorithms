@@ -22,13 +22,15 @@ export default function SelectorSliderComponent(props: SelectorSliderComponentPr
         valueSetterWithDebounce(value);
     }
 
-    return <>
+    return <div className="flex flex-col">
         <span className="flex justify-center h-4">{props.title}</span>
         <input type="range" className="w-full" min="1" max={props.values.length} step="1" onChange={onValueChanged}/>
-        <ul className="flex justify-between w-full px-[10px]">
-            {props.values.map((value) => <li className="flex justify-center relative" key={value}>
-                <span className="absolute">{value}</span>
-            </li>)}
+        <ul className="flex justify-between">
+            {
+                props.values.map((value) => <li className="flex-1" key={value}>
+                    {value}
+                </li>)
+            }
         </ul>
-    </>
+    </div>
 }

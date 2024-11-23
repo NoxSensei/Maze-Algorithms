@@ -47,7 +47,7 @@ export default function MazeCreatorMenuComponent() {
     };
 
     return <div className="flex h-auto justify-center space-x-28">
-        <div className="flex flex-col space-y-2 p-2 w-80 h-24">
+        <div className="space-y-2 p-2 w-80 h-24">
             <NumericSliderComponent
                 title={"Grid Size"}
                 stepValue={gridSizeStep}
@@ -87,7 +87,7 @@ export default function MazeCreatorMenuComponent() {
             </button>
         </div>
 
-        <div className="flex flex-col space-y-2 p-2 w-80  h-20">
+        <div className="space-y-2 p-2 w-80 h-24">
             <SelectorSliderComponent
                 title={"Drawing Speed"}
                 values={Object.values(DrawingSpeed)}
