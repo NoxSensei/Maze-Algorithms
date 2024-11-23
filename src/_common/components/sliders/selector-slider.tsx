@@ -27,7 +27,7 @@ export default function SelectorSliderComponent(props: SelectorSliderComponentPr
         <input type="range" className="w-full" min="1" max={props.values.length} step="1" onChange={onValueChanged}/>
         <ul className="flex justify-between">
             {
-                props.values.map((value) => <li className="flex-1" key={value}>
+                props.values.map((value) => <li className="flex flex-1 justify-center" key={value}>
                     {value}
                 </li>)
             }
