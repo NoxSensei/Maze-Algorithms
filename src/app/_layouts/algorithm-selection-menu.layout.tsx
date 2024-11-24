@@ -4,8 +4,8 @@ import {faHouse} from "@fortawesome/free-solid-svg-icons";
 
 export default function AlgorithmSelectionMenuLayout({children}: Readonly<{ children: React.ReactNode }>) {
     return (<div className="grid grid-cols-8">
-        <div className="col-span-1 bg-black overflow-y-auto">
-            <nav className="flex flex-col pt-5 pl-5">
+        <div className="col-span-1 bg-zinc-800 overflow-y-auto">
+            <nav className="flex flex-col pt-5 pl-5 text-white">
                 <Link href="/" className="h-10">
                     <FontAwesomeIcon icon={faHouse} className="h-full"/>
                 </Link>
