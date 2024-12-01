@@ -1,12 +1,11 @@
 'use client'
 
-import {useRef, useState} from "react";
+import {useState} from "react";
 import {MazeCreatorContextData, MazeCreatorContext} from "@/app/algorithms/_common/contexts/maze-creator";
 import MazeCreatorPainterComponent from "@/app/algorithms/_common/components/creator/maze-creator-painter";
 import MazeCreatorMenuComponent from "@/app/algorithms/_common/components/creator/maze-creator-menu";
 import {MazeAlgorithm} from "@/app/algorithms/_common/services/maze-algorithm";
 import {DrawingSpeed} from "@/app/algorithms/_common/models/drawing-speed";
-import dynamic from "next/dynamic";
 
 export interface MazeCreatorComponentProps {
     mazeAlgorithm: MazeAlgorithm;

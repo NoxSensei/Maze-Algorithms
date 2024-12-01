@@ -3,7 +3,7 @@
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
 
-export default function DepthFirstSearchAlgorithmPage() {
+export default function EllerAlgorithmPage() {
     const {push} = useRouter();
 
     useEffect(() => {
