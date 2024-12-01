@@ -1,52 +1,95 @@
+import initialGridImg from "../../../../../public/mazes/initial-grid.png";
+import complexExampleImg from "../../../../../public/mazes/depth-first-search/complex-example.png";
+import firstCellImg from "../../../../../public/mazes/depth-first-search/first-cell.png";
+import firstCellNeighboursImg from "../../../../../public/mazes/depth-first-search/first-cell-neighbours.png";
+import secondCellNeighboursImg from "../../../../../public/mazes/depth-first-search/secound-cell-neighbours.png";
+import boundaryImg from "../../../../../public/mazes/depth-first-search/boundary-cell.png";
+import completedPathImg from "../../../../../public/mazes/depth-first-search/completed-path.png";
+import completedMazeImg from "../../../../../public/mazes/depth-first-search/completed-maze.png";
+import IllustrativeImageComponent from "@/app/algorithms/_common/components/details/illustrative-image";
+
 export default function DepthFirstSearchDescriptionComponent() {
-    return (<div className="space-y-6 text-justify">
-        <p>
-            The Depth First Search (DFS) algorithm for maze generation begins by setting up a grid, where
-            each cell is surrounded by walls. This grid is defined by its size, which determines the overall
-            structure of the maze. Initially, the grid is fully enclosed, with no passages between any of
-            the cells, creating a solid block of walls.
-        </p>
-        <p>
-            To start the maze generation, a random cell within this grid is selected. This cell serves as
-            the
-            starting point for the maze. The algorithm marks this cell as visited, which is essential for
-            tracking progress and ensuring that no cell is revisited unnecessarily. The next step involves
-            identifying all neighboring cells of the current cell. These neighboring cells are then shuffled
-            randomly to introduce unpredictability in the maze’s layout.
-        </p>
-        <p>
-            The algorithm then checks whether all neighboring cells have been processed. If all neighbors
-            have
-            been checked, the algorithm evaluates whether the entire maze has been fully resolved. If not
-            all
-            neighboring cells have been checked, the algorithm selects the next neighboring cell and
-            determines
-            whether this cell lies within the grid’s boundaries. If the selected neighbor is outside the
-            grid,
-            the algorithm returns to check any remaining neighbors.
-        </p>
-        <p>
-            For neighbors within the grid that haven’t been visited yet, the algorithm removes the wall
-            between
-            the current cell and the selected neighbor, creating a passage. The neighbor is then marked as
-            the
-            current cell and subsequently marked as visited, continuing the process of maze creation. This
-            process repeats recursively, carving out paths and marking cells until all possible neighbors
-            are
-            visited and all potential paths are explored.
-        </p>
-        <p>
-            Once all paths have been resolved, the algorithm concludes by returning the fully generated
-            maze,
-            represented by the grid with the walls removed in the appropriate places to create a connected
-            maze.
-            If there are any unresolved paths, the algorithm backtracks to previous cells, revisiting them
-            to
-            ensure that all possible passages have been created. This backtracking continues until every
-            path
-            has been thoroughly explored and the maze is complete. The final output is a maze where every
-            cell
-            is accessible, and the entire grid is connected through a series of pathways.
-        </p>
-    </div>)
+    return <div className="space-y-6 text-justify" style={{color: "black"}}>
+        <div className='text-2xl text-center pb-3'>Depth First Search</div>
+
+        <div className="grid grid-cols-5">
+            <div className="col-start-2 col-span-3">
+                <div>
+                    <IllustrativeImageComponent image={complexExampleImg} height="50vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+                    <br/>
+                    <br/>
+                    <hr className="pb-10"/>
+
+                    <p className="pb-10">
+                        The Depth First Search (DFS) algorithm begins by setting up a grid, where each cell is
+                        surrounded by walls. Initially, it is fully enclosed, with no passages between any of the cells,
+                        creating a solid
+                        block.
+                    </p>
+
+                    <IllustrativeImageComponent image={initialGridImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+                    <p className="pt-10 pb-10">
+                        To start the maze generation, a random cell within this grid is selected. This cell serves as
+                        the starting point. The algorithm marks this cell as visited, which is essential for
+                        tracking progress and ensuring that none of the cells is revisited.
+                    </p>
+
+                    <IllustrativeImageComponent image={firstCellImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+
+                    <p className="pt-10 pb-10">
+                        The next step involves
+                        identifying all neighboring cells of the current one. These neighboring cells are then shuffled
+                        randomly to introduce unpredictability in the maze’s layout.
+                    </p>
+
+                    <IllustrativeImageComponent image={firstCellNeighboursImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+                    <p className="pt-10 pb-10">
+                        Then each of the neighbours is entered separately starting from no. 1. When the neighbour is entered
+                        it is marked as visited and the wall between previous cell and the current one is removed.
+                        After doing that another neighbouring cells are randomly shuffled. In the given case fourth
+                        cell will be omitted when all of the remaining cells are entered as it was already visited.
+                    </p>
+
+                    <IllustrativeImageComponent image={secondCellNeighboursImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+                    <p className="pt-10 pb-10">
+                        The same process is repeated for the subsequent calls. If the cell is located on the border
+                        then the number of the neighbours will be limited to the cells present on the grid which
+                        were not entered yet.
+                    </p>
+
+
+                    <IllustrativeImageComponent image={boundaryImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+                    <p className="pt-10 pb-10">
+                        When one of the paths is fully resolved (the algorithm had been entering the neighbour of the
+                        neighbour and reached the most end), then algorithm goes back to the previous cell and enters
+                        the remaining neighbours. The given example shows the completed path for the first neighbour,
+                        all of the paths have been resolved there so now it will redo the same logic for the secound one.
+                    </p>
+
+
+                    <IllustrativeImageComponent image={completedPathImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+
+                    <p className="pt-10 pb-10">
+                        Solving all of the paths results with complete maze.
+                    </p>
+
+                    <IllustrativeImageComponent image={completedMazeImg} height="30vh"
+                                                alt={'Depth First Search Algorithm Image'}/>
+                </div>
+            </div>
+        </div>
+    </div>
 }
