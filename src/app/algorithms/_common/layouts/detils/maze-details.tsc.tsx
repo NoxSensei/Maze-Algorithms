@@ -17,8 +17,7 @@ export default function MazeDetailsLayout(props: MazeDetailsLayoutProps) {
                                             alt={`${props.title} Complex Example`}/>
 
                 <br/>
-                <br/>
-                <hr className="pb-10"/>
+                <hr className="bg-gray-700 border-0 h-px my-10"/>
 
                 {props.children}
             </div>
