@@ -21,7 +21,7 @@ export default function DepthFirstSearchAlgorithmLayout({children}: Readonly<{ c
     const pathPrefix = currentPath.split('/').slice(0, 3).join('/');
 
     return (<div className="flex flex-col h-full">
-        <div className="sticky h-10 top-0 bg-zinc-700">
+        <div className="sticky h-10 top-0 bg-gradient-to-r from-zinc-800 from-1% to-zinc-700">
             <div className="flex h-full justify-center items-center space-x-5">
                 <RenderInfoMenuItemsComponent itemsTitles={["Details", "Flow Chart", "Creator"]}
                                               pathPrefix={pathPrefix}/>
