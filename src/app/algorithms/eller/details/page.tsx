@@ -18,8 +18,8 @@ export default function EllerAlgorithmDetailsPage() {
         <div className="pb-10">
             Main feature of Eller algorithm is the linear time complexity. It can generate really complex mazes
             in a short time comparing to the different algorithms. The algorithm itself can be implemented in two ways.
-            First one where whole gird is initialized with walls placed and they are removed in the further
-            iterations. second one where grid is empty and the walls are placed in the further iterations.
+            First one where whole grid is initialized with walls placed and they are removed in the further
+            iterations. Second one where grid is empty and the walls are placed in the further iterations.
             Given document will cover the first implementation scenario starting with all walls placed.
         </div>
 
