@@ -1,10 +1,10 @@
 'use client'
 
 import IllustrativeImageComponent from "@/app/algorithms/_common/components/details/illustrative-image";
-import initialGridImg from "../../../../../public/mazes/initial-grid.png";
+import initialGridImg from "../../../../../public/mazes/depth-first-search/initial-grid.png";
 import firstCellImg from "../../../../../public/mazes/depth-first-search/first-cell.png";
 import firstCellNeighboursImg from "../../../../../public/mazes/depth-first-search/first-cell-neighbours.png";
-import secondCellNeighboursImg from "../../../../../public/mazes/depth-first-search/secound-cell-neighbours.png";
+import secondCellNeighboursImg from "../../../../../public/mazes/depth-first-search/second-cell-neighbours.png";
 import boundaryImg from "../../../../../public/mazes/depth-first-search/boundary-cell.png";
 import completedPathImg from "../../../../../public/mazes/depth-first-search/completed-path.png";
 import completedMazeImg from "../../../../../public/mazes/depth-first-search/completed-maze.png";
@@ -64,7 +64,7 @@ export default function DepthFirstSearchAlgorithmDetailsPage() {
             When one of the paths is fully resolved (the algorithm had been entering the neighbour of the
             neighbour and reached the most end), then algorithm goes back to the previous cell and enters
             the remaining neighbours. The given example shows the completed path for the first neighbour,
-            all of the paths have been resolved there so now it will redo the same logic for the secound one.
+            all of the paths have been resolved there so now it will redo the same logic for the second one.
         </p>
 
 
