@@ -13,16 +13,16 @@ const diagram = `flowchart TD
     SELECT_NEXT_CELL_FROM_ROW --> IS_LAST_CELL
     
     IS_LAST_CELL{Is it the last cell in the row?}
-    IS_LAST_CELL -- Yes --> IS_LAST_ROW
+    IS_LAST_CELL -- Yes --> IS_LAST_ROW_2
     IS_LAST_CELL -- No --> IS_EASTERN_NODE_IN_SAME_GROUP
     
     IS_EASTERN_NODE_IN_SAME_GROUP{Is eastern node in the same group \n as current one?}
     IS_EASTERN_NODE_IN_SAME_GROUP -- Yes --> SELECT_NEXT_CELL_FROM_ROW
-    IS_EASTERN_NODE_IN_SAME_GROUP -- No --> IS_LAST_ROW1
+    IS_EASTERN_NODE_IN_SAME_GROUP -- No --> IS_LAST_ROW_1
     
-    IS_LAST_ROW1{Is it the last row?}
-    IS_LAST_ROW1 -- Yes --> REMOVE_EASTERN_WALL
-    IS_LAST_ROW1 -- No --> SELECT_RANDOMLY
+    IS_LAST_ROW_1{Is it the last row?}
+    IS_LAST_ROW_1 -- Yes --> REMOVE_EASTERN_WALL
+    IS_LAST_ROW_1 -- No --> SELECT_RANDOMLY
     
     SELECT_RANDOMLY[Select randomly whether event happens with a 50% chance]
     SELECT_RANDOMLY --> IS_RANDOM_CHANCE_MET
@@ -34,9 +34,9 @@ const diagram = `flowchart TD
     REMOVE_EASTERN_WALL --> ASSIGN_EASTERN_NODE[Assign eastern node to the current node's group]
     ASSIGN_EASTERN_NODE --> SELECT_NEXT_CELL_FROM_ROW
     
-    IS_LAST_ROW{Is it the last row?}
-    IS_LAST_ROW -- No --> LIST_ALL_GROUPS[List all defined groups]
-    IS_LAST_ROW -- Yes --> END([End])
+    IS_LAST_ROW_2{Is it the last row?}
+    IS_LAST_ROW_2 -- No --> LIST_ALL_GROUPS[List all defined groups]
+    IS_LAST_ROW_2 -- Yes --> END([End])
     
     LIST_ALL_GROUPS --> SELECT_NEXT_GROUP[Select next unprocessed group]
     SELECT_NEXT_GROUP --> SELECT_COUNT_OF_SOUTHERN_PASSAGES[Select randomly number of southern passages \n min: 1 \n max: count of the current group's nodes located in the most recent row]
@@ -52,9 +52,5 @@ const diagram = `flowchart TD
 `;
 
 export default function EllerAlgorithmFlowChartPage() {
-    return <div className="flex justify-center">
-        <div className="w-full max-w-screen-md">
-            <MermaidDiagram chart={diagram}/>
-        </div>
-    </div>
+    return <MermaidDiagram chart={diagram}/>;
 }

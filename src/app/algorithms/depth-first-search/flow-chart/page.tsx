@@ -25,9 +25,5 @@ const diagram = `flowchart TD
 `;
 
 export default function DepthFirstSearchAlgorithmFlowChartPage() {
-    return <div className="flex justify-center">
-        <div className="w-full max-w-screen-md">
-            <MermaidDiagram chart={diagram}/>
-        </div>
-    </div>
+    return <MermaidDiagram chart={diagram}/>;
 }

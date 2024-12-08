@@ -15,12 +15,17 @@ export default function MermaidDiagram({chart}: MermaidDiagramProps) {
             return;
         }
 
-        mermaid.initialize({startOnLoad: true, theme: 'neutral', logLevel: 'error'});
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'neutral',
+            logLevel: 'error',
+        });
+
         const chartId = `chart-${uuid.v4()}`;
         mermaid.render(chartId, chart).then(result => {
             chartRef.current!.innerHTML = result.svg;
         })
     }, [chart]);
 
-    return <div ref={chartRef}/>
+    return <div ref={chartRef} style={{display: "flex", justifyContent: "center"}}/>
 }
