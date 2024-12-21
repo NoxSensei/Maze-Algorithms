@@ -1,3 +1,14 @@
+'use client'
+
+import {useRouter} from "next/navigation";
+import {useEffect} from "react";
+
 export default function KruskalAlgorithmPage() {
-    return <div className="text-black">Kruskal</div>
+    const {push} = useRouter();
+
+    useEffect(() => {
+        push('/algorithms/kruskal/details');
+    });
+
+    return <></>;
 }
