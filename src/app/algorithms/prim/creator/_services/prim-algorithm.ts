@@ -40,7 +40,9 @@ export class PrimAlgorithm extends MazeAlgorithm {
             }, [])
 
             const nodeToBuildPathFrom = JsHelpers.getRandomElementFromArray(visitedNeighbours);
-            this.removeWallBetweenNodes(nodeToBuildPathFrom, frontier);
+            if (nodeToBuildPathFrom) {
+                this.removeWallBetweenNodes(nodeToBuildPathFrom, frontier);
+            }
         }
     }
 

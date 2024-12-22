@@ -18,7 +18,7 @@ export class JsHelpers {
             .map(({value}) => value)
     }
 
-    public static getRandomElementFromArray<T>(array: T[]): T {
+    public static getRandomElementFromArray<T>(array: T[]): T | undefined {
         return this.shuffleArray(array).at(0);
     }
 
@@ -27,7 +27,7 @@ export class JsHelpers {
             return undefined;
         }
 
-        const randomValue = this.getRandomElementFromArray([...set.values()]);
+        const randomValue = this.getRandomElementFromArray([...set.values()])!;
         set.delete(randomValue);
         return randomValue;
     }
