@@ -9,38 +9,38 @@ export class PrimAlgorithm extends MazeAlgorithm {
         const columnIndex = JsHelpers.randomInt(0, maze.columnsCount - 1);
         const initialNode = maze.grid[rowIndex][columnIndex];
 
-        let frontiers = [initialNode];
+        let frontiers = new Set([initialNode]);
 
         let iteration = 0;
-        while (frontiers.length) {
+        while (frontiers.size) {
             iteration++;
 
-            frontiers = JsHelpers.shuffleArray(frontiers);
-            const frontier = frontiers.pop()!;
+            const frontier = JsHelpers.popRandomElementFromSet(frontiers)!;
             const frontierNeighbours = this.getNodeNeighbours(maze, frontier);
 
-            const visitedNeighbours = frontierNeighbours.reduce((acc, node) => {
+            const newFrontierNodes = frontierNeighbours.reduce<MazeNode[]>((acc, node) => {
+                if (!visitedNodes.has(node) && !frontiers.has(node)) {
+                    acc.push(node);
+                }
+                return acc;
+            }, [])
+
+            newFrontierNodes.forEach(node => frontiers.add(node));
+            visitedNodes.add(frontier);
+
+            if (iteration === 1) {
+                continue;
+            }
+
+            const visitedNeighbours = frontierNeighbours.reduce<MazeNode[]>((acc, node) => {
                 if (visitedNodes.has(node)) {
                     acc.push(node);
                 }
                 return acc;
             }, [])
-            const nonVisitedNeighbours = frontierNeighbours.reduce((acc, node) => {
-                if (!visitedNodes.has(node) && !frontiers.find(x => x === node)) {
-                    acc.push(node);
-                }
-                return acc;
-            }, [])
 
-            frontiers = [...frontiers, ...nonVisitedNeighbours];
-
-            visitedNodes.add(frontier);
-            if (iteration === 1) {
-                continue;
-            }
-
-            const topassage = JsHelpers.shuffleArray(visitedNeighbours).at(0);
-            this.removeWallBetweenNodes(topassage, frontier);
+            const nodeToBuildPathFrom = JsHelpers.getRandomElementFromArray(visitedNeighbours);
+            this.removeWallBetweenNodes(nodeToBuildPathFrom, frontier);
         }
     }
 

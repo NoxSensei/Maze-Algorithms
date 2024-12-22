@@ -18,6 +18,20 @@ export class JsHelpers {
             .map(({value}) => value)
     }
 
+    public static getRandomElementFromArray<T>(array: T[]): T {
+        return this.shuffleArray(array).at(0);
+    }
+
+    public static popRandomElementFromSet<T>(set: Set<T>): T | undefined {
+        if (!set.size) {
+            return undefined;
+        }
+
+        const randomValue = this.getRandomElementFromArray([...set.values()]);
+        set.delete(randomValue);
+        return randomValue;
+    }
+
     public static async sleep(ms: number): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, ms));
     }
