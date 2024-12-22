@@ -31,12 +31,14 @@ const diagram = `flowchart TD
     IS_RANDOM_CHANCE_MET -- Yes --> REMOVE_EASTERN_WALL[Remove eastern wall]
     IS_RANDOM_CHANCE_MET -- No --> SELECT_NEXT_CELL_FROM_ROW
     
-    REMOVE_EASTERN_WALL --> ASSIGN_EASTERN_NODE[Assign eastern node to the current node's group]
+    REMOVE_EASTERN_WALL --> ASSIGN_EASTERN_NODE[Assign all nodes from the second node's group \n to the first node's group]
     ASSIGN_EASTERN_NODE --> SELECT_NEXT_CELL_FROM_ROW
     
     IS_LAST_ROW_2{Is it the last row?}
     IS_LAST_ROW_2 -- No --> LIST_ALL_GROUPS[List all defined groups]
-    IS_LAST_ROW_2 -- Yes --> END([End])
+    IS_LAST_ROW_2 -- Yes --> OUTPUT_GRID[/Return grid/]
+    
+    OUTPUT_GRID --> END([End])
     
     LIST_ALL_GROUPS --> SELECT_NEXT_GROUP[Select next unprocessed group]
     SELECT_NEXT_GROUP --> SELECT_COUNT_OF_SOUTHERN_PASSAGES[Select randomly number of southern passages \n min: 1 \n max: count of the current group's nodes located in the most recent row]
