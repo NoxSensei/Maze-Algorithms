@@ -1,6 +1,5 @@
 import {Direction} from "@/_common/models/direction";
 import {Maze} from "@/app/algorithms/_common/models/maze";
-import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import {MazeNodesHistory} from "@/app/algorithms/_common/models/maze-nodes-history";
 
 export abstract class MazeAlgorithm {
