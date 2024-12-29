@@ -29,7 +29,6 @@ export class PrimAlgorithm extends MazeAlgorithm {
 
             newFrontierNodes.forEach(node => frontiers.add(node));
             visitedNodes.add(frontier);
-            nodesHistory.add(frontier);
 
             const visitedNeighbours = frontierNeighbours.reduce<MazeNode[]>((acc, node) => {
                 if (visitedNodes.has(node)) {
@@ -41,8 +40,9 @@ export class PrimAlgorithm extends MazeAlgorithm {
             const nodeToBuildPathFrom = JsHelpers.getRandomElementFromArray(visitedNeighbours);
             if (nodeToBuildPathFrom) {
                 this.removeWallBetweenNodes(nodeToBuildPathFrom, frontier);
-                nodesHistory.add(frontier);
             }
+
+            nodesHistory.add(frontier);
         }
     }
 
