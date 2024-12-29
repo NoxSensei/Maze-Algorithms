@@ -3,6 +3,7 @@ import {Maze} from "@/app/algorithms/_common/models/maze";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import {JsHelpers} from "@/_common/services/js-helpers";
 import {v4} from "uuid";
+import {MazeNodesHistory} from "@/app/algorithms/_common/models/maze-nodes-history";
 
 class ExtendedMazeNode extends MazeNode {
     groupId?: string;
@@ -13,7 +14,7 @@ interface NodesGroup {
 }
 
 export class EllerAlgorithm extends MazeAlgorithm {
-    protected removeWalls(maze: Maze, visitedNodes: Set<MazeNode>): void {
+    protected removeWalls(maze: Maze, nodesHistory: MazeNodesHistory): void {
         const extendedMazeGrid = maze.grid as ExtendedMazeNode[][]
         const nodesGroups = new Map<string, NodesGroup>();
 
@@ -24,7 +25,7 @@ export class EllerAlgorithm extends MazeAlgorithm {
             this.assignGroupIdForEachNodeInRow(row, nodesGroups);
 
             for (const [columnIndex, node] of row.entries()) {
-                visitedNodes.add(node);
+                nodesHistory.add(node);
 
                 this.buildEasternPassages(nodesGroups, node, columnIndex, row, isLastRow);
                 this.addNodeToTheCurrentRowNodesGroup(currentRowNodesGroups, node);
@@ -35,7 +36,7 @@ export class EllerAlgorithm extends MazeAlgorithm {
                 continue;
             }
 
-            this.buildSouthernPassages(currentRowNodesGroups, extendedMazeGrid, visitedNodes, nodesGroups);
+            this.buildSouthernPassages(currentRowNodesGroups, extendedMazeGrid, nodesHistory, nodesGroups);
         }
     }
 
@@ -79,7 +80,7 @@ export class EllerAlgorithm extends MazeAlgorithm {
         currentRowNodesGroups.get(node.groupId)!.nodes.push(node);
     }
 
-    private buildSouthernPassages(currentRowNodesGroups: Map<string, NodesGroup>, extendedMazeGrid: ExtendedMazeNode[][], visitedNodes: Set<MazeNode>, nodesGroups: Map<string, NodesGroup>): void {
+    private buildSouthernPassages(currentRowNodesGroups: Map<string, NodesGroup>, extendedMazeGrid: ExtendedMazeNode[][], nodesHistory: MazeNodesHistory, nodesGroups: Map<string, NodesGroup>): void {
         for (const [groupId, nodesGroup] of currentRowNodesGroups) {
             // Draw how many passages needs to be created in the southern direction.
             // There must be at least one passage
@@ -89,10 +90,11 @@ export class EllerAlgorithm extends MazeAlgorithm {
             const nodes = JsHelpers.shuffleArray(nodesGroup.nodes).slice(0, passagesCount);
             nodes.forEach(((node) => {
                 const nodeOnTheSouth = extendedMazeGrid[node.rowIndex + 1][node.columnIndex];
-                visitedNodes.add(nodeOnTheSouth);
 
                 node.isWallOnSouth = false;
                 nodeOnTheSouth.isWallOnNorth = false;
+
+                nodesHistory.add(nodeOnTheSouth);
 
                 this.assignNodesToTheSameGroup(nodesGroups, nodeOnTheSouth, node);
             }))

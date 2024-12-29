@@ -2,12 +2,14 @@ import {MazeAlgorithm} from "@/app/algorithms/_common/services/maze-algorithm";
 import {Maze} from "@/app/algorithms/_common/models/maze";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import {JsHelpers} from "@/_common/services/js-helpers";
+import {MazeNodesHistory} from "@/app/algorithms/_common/models/maze-nodes-history";
 
 export class PrimAlgorithm extends MazeAlgorithm {
-    protected removeWalls(maze: Maze, visitedNodes: Set<MazeNode>): void {
+    protected removeWalls(maze: Maze, nodesHistory: MazeNodesHistory): void {
         const rowIndex = JsHelpers.randomInt(0, maze.rowsCount - 1);
         const columnIndex = JsHelpers.randomInt(0, maze.columnsCount - 1);
         const initialNode = maze.grid[rowIndex][columnIndex];
+        const visitedNodes = new Set<MazeNode>();
 
         let frontiers = new Set([initialNode]);
 
@@ -27,6 +29,7 @@ export class PrimAlgorithm extends MazeAlgorithm {
 
             newFrontierNodes.forEach(node => frontiers.add(node));
             visitedNodes.add(frontier);
+            nodesHistory.add(frontier);
 
             if (iteration === 1) {
                 continue;
@@ -42,6 +45,7 @@ export class PrimAlgorithm extends MazeAlgorithm {
             const nodeToBuildPathFrom = JsHelpers.getRandomElementFromArray(visitedNeighbours);
             if (nodeToBuildPathFrom) {
                 this.removeWallBetweenNodes(nodeToBuildPathFrom, frontier);
+                nodesHistory.add(frontier);
             }
         }
     }

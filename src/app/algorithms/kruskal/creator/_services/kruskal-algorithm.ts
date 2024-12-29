@@ -3,6 +3,7 @@ import {Maze} from "@/app/algorithms/_common/models/maze";
 import {MazeNode} from "@/app/algorithms/_common/models/maze-node";
 import {v4 as uuidV4} from "uuid";
 import {JsHelpers} from "@/_common/services/js-helpers";
+import {MazeNodesHistory} from "@/app/algorithms/_common/models/maze-nodes-history";
 
 interface ExtendedMazeNode extends MazeNode {
     groupId: string;
@@ -19,7 +20,7 @@ interface NodesGroup {
 }
 
 export class KruskalAlgorithm extends MazeAlgorithm {
-    protected removeWalls(maze: Maze, visitedNodes: Set<MazeNode>): void {
+    protected removeWalls(maze: Maze, nodesHistory: MazeNodesHistory): void {
         const {extendedMaze, nodesGroups} = this.assignNodesToUniqueGroups(maze);
         const walls = this.getWallsToBeProcessed(extendedMaze, maze);
         const shuffledWalls = JsHelpers.shuffleArray(walls);
@@ -39,8 +40,8 @@ export class KruskalAlgorithm extends MazeAlgorithm {
 
             // Clone visited node to have the state frozen from the given moment
             // We don't want to include reference as it already contains all selected walls removed
-            visitedNodes.add(structuredClone(wall.node1));
-            visitedNodes.add(structuredClone(wall.node2));
+            nodesHistory.add(structuredClone(wall.node1));
+            nodesHistory.add(structuredClone(wall.node2));
         }
     }
 
