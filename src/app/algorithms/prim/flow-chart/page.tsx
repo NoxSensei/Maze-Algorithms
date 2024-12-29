@@ -18,11 +18,7 @@ const diagram = `flowchart TD
     MARK_AS_VISITED --> GET_NEIGHBOURS[Get cell's neighbours]
     GET_NEIGHBOURS --> ADD_FRONTIERS[Add non visited neighbours to the frontiers list - \n skip addition if the node is already present in the frontiers list]
     
-    ADD_FRONTIERS --> IS_FIRST_ITERATION{Is first algorithm's iteration?}
-    IS_FIRST_ITERATION -- Yes --> IS_FRONTIERS_LIST_EMPTY
-    IS_FIRST_ITERATION -- No --> SELECT_RANDOM_VISITED[Select current cell's already visited neighbour at random]
-    
-    SELECT_RANDOM_VISITED --> REMOVE_WALL[Remove wall between current cell and randomly selected neighbour]
+    ADD_FRONTIERS --> REMOVE_WALL[Remove wall between current cell \n and one of the already visited neighbours selected at random]
     REMOVE_WALL --> IS_FRONTIERS_LIST_EMPTY
         
     OUTPUT_GRID --> END([End])

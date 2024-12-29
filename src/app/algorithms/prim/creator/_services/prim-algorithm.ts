@@ -31,10 +31,6 @@ export class PrimAlgorithm extends MazeAlgorithm {
             visitedNodes.add(frontier);
             nodesHistory.add(frontier);
 
-            if (iteration === 1) {
-                continue;
-            }
-
             const visitedNeighbours = frontierNeighbours.reduce<MazeNode[]>((acc, node) => {
                 if (visitedNodes.has(node)) {
                     acc.push(node);
