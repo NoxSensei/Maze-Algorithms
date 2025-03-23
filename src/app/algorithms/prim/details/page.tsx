@@ -64,8 +64,8 @@ export default function PrimAlgorithmDetailsPage() {
         <p className="pt-10 pb-10">
             Another iteration randomly selects the frontier cell no. 5. The neighbouring cells 13 and 14 got pushed to
             the list. Cells 1 and 10 are already visited so we do not push them to the list, instead we choose randomly
-            the cell where the passage needs to be created. As a result for the given iteration the cell no. 10 got
-            selected so the new passage got created.
+            the already visited cell where the passage needs to be created. As a result for the given iteration the cell
+            no. 10 got selected so the new passage got created.
         </p>
 
         <IllustrativeImageComponent image={fifthCellSelectedImg} height="30vh"
