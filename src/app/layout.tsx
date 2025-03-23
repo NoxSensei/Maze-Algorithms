@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en">
-        <body className={`${inter.className} bg-zinc-200`}>
+        <body className={`${inter.className} bg-zinc-200 h-full`}>
         <AlgorithmSelectionMenuLayout>
             {children}
         </AlgorithmSelectionMenuLayout>
