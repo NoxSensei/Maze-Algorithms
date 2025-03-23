@@ -44,7 +44,8 @@ export default function PrimAlgorithmDetailsPage() {
 
         <p className="pt-10 pb-10">
             In the next iteration randomly selected frontier cell is the no. 4. The 8, 9 and 10 neighbours are pushed to
-            the frontiers list and the wall between already visited cell no. 1 and no. 4 gets removed.
+            the frontiers list. Cell no. 1 was already visited so it is not pushed and the wall between it and no. 4
+            gets removed.
         </p>
 
         <IllustrativeImageComponent image={thirdCellSelectedImg} height="30vh"
@@ -52,7 +53,7 @@ export default function PrimAlgorithmDetailsPage() {
 
         <p className="pt-10 pb-10">
             The next algorithm run randomly selects another cell. In the given case it is the no. 10. Then the no. 11
-            and 12 got pushed to the frontiers list. The cell no .5 is already present there so we do not make a
+            and 12 got pushed to the frontiers list. The cell no. 5 is already present there so we do not make a
             duplicate. Also the cell no. 4 was already visited so we do not push it. Instead we create the passage
             between current cell and no. 4.
         </p>
