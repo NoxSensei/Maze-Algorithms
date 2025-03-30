@@ -10,7 +10,7 @@ function RenderInfoMenuItemsComponent({itemsTitles, pathPrefix}: {
 }) {
     return itemsTitles.map(itemTitle => {
         const itemPath = itemTitle.toLowerCase().replaceAll(' ', '-')
-        return <Link href={`${pathPrefix}/${itemPath}`} key={itemTitle}>
+        return <Link className="hover:bg-zinc-700 hover:rounded-lg pt-1 pb-1 pl-2 pr-2" href={`${pathPrefix}/${itemPath}`} key={itemTitle}>
             {itemTitle}
         </Link>
     })
