@@ -5,7 +5,7 @@ import {faHouse} from "@fortawesome/free-solid-svg-icons";
 export function AlgorithmSelectionMenuComponent() {
     return (
         <nav className="flex flex-col pl-5 pr-5 text-white gap-5">
-            <div className="pt-5 pb-5">
+            <div className="pt-5 pb-5 pl-2">
                 <Link href="/">
                     <FontAwesomeIcon icon={faHouse} className="h-10"/>
                 </Link>
