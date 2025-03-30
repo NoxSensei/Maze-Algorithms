@@ -7,7 +7,7 @@ export function AlgorithmSelectionMenuComponent() {
         <nav className="flex flex-col pl-5 pr-5 text-white gap-5">
             <div className="pt-5 pb-5">
                 <Link href="/">
-                    <FontAwesomeIcon icon={faHouse} className="p-2 w-16 hover:bg-zinc-700 hover:rounded-lg"/>
+                    <FontAwesomeIcon icon={faHouse} className="p-2 h-16 hover:bg-zinc-700 hover:rounded-lg"/>
                 </Link>
             </div>
 
