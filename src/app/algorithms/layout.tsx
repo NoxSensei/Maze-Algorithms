@@ -1,8 +1,8 @@
 'use client'
 
-import Link from "next/link";
 import React from "react";
 import {usePathname} from "next/navigation";
+import MenuTextButtonComponent from "@/app/_components/menu-text-button.component";
 
 function RenderInfoMenuItemsComponent({itemsTitles, pathPrefix}: {
     itemsTitles: string[];
@@ -10,9 +10,8 @@ function RenderInfoMenuItemsComponent({itemsTitles, pathPrefix}: {
 }) {
     return itemsTitles.map(itemTitle => {
         const itemPath = itemTitle.toLowerCase().replaceAll(' ', '-')
-        return <Link className="hover:bg-zinc-700 hover:rounded-lg pt-1 pb-1 pl-2 pr-2" href={`${pathPrefix}/${itemPath}`} key={itemTitle}>
-            {itemTitle}
-        </Link>
+        const href = `${pathPrefix}/${itemPath}`;
+        return <MenuTextButtonComponent href={href} text={itemTitle} key={itemTitle}/>;
     })
 }
 
