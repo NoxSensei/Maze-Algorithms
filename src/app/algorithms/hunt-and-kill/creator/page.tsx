@@ -4,6 +4,6 @@ import {MazeCreatorComponent} from "@/app/algorithms/_common/components/creator/
 import {HuntAndKillAlgorithm} from "@/app/algorithms/hunt-and-kill/creator/_services/hunt-and-kill-algorithm";
 
 
-export default function EllerAlgorithmCreatorPage() {
+export default function HuntAndKillAlgorithmCreatorPage() {
     return <MazeCreatorComponent mazeAlgorithm={new HuntAndKillAlgorithm()}/>
 }

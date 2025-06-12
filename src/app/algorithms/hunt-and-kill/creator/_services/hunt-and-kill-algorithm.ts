@@ -131,8 +131,6 @@ export class HuntAndKillAlgorithm extends MazeAlgorithm {
 
                 visitedNodes.add(node);
                 nodesHistory.add(node);
-                visitedNodes.add(neighbouringNode);
-                nodesHistory.add(neighbouringNode);
                 return neighbouringNode;
             }
         }
