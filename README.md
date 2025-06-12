@@ -4,7 +4,7 @@
 
 Demo project of the base maze generation algorithms. The project's goal is to get more familiar with
 algorithms and Next.js framework in context of full client side application. The page is accessible
-via [GitHub pages](noxsensei.github.io/Maze-Algorithms/).
+via [GitHub pages](https://noxsensei.github.io/Maze-Algorithms/).
 
 ## Prerequisites
 
